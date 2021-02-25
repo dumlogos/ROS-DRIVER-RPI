@@ -39,6 +39,7 @@ private:
     CAN_Struct CAN_comData;
     QThread *transmitterThread;
     QThread *receiverThread;
+    QString iface;
 
 public:
     CAN_Transmitter *Transmitter;
@@ -49,10 +50,14 @@ public:
 
     bool CAN_Handler_Setup();
     bool CAN_Handler_SetDown();
+
+
+
     CAN_Struct* getCAN_Struct();
     void Handle();
 
 public slots:
+    bool CAN_Set_Interface(CAN_IFace iface);
 
 signals:
    void ReceiveAllCAN();

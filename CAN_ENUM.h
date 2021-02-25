@@ -25,6 +25,11 @@ enum DriverState{
    START
 };
 
+enum CAN_IFace{
+  VCAN,
+  CAN0
+};
+
 
 
 #endif // CAN_ENUM_H

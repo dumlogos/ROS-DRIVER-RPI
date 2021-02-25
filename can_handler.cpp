@@ -1,6 +1,8 @@
 #include "can_handler.h"
 
-CAN_Handler::CAN_Handler(QWidget *parent) : QWidget(parent)
+CAN_Handler::CAN_Handler(QWidget *parent) :
+    QWidget(parent),
+    iface("vcan0")
 {
     CAN_Handler_Setup();
     Transmitter = new CAN_Transmitter(this);
@@ -30,7 +32,8 @@ bool CAN_Handler::CAN_Handler_Setup()
     }
 
     //2.Specify can0 device
-    strcpy(CAN_comData.ifr.ifr_name, "can0");
+    qDebug() << iface.toStdString().c_str() << "connected";
+    strcpy(CAN_comData.ifr.ifr_name, iface.toStdString().c_str());
      CAN_comData.ret = ioctl(CAN_comData.s, SIOCGIFINDEX, &(CAN_comData.ifr));
     if (CAN_comData.ret < 0) {
         perror("ioctl failed");
@@ -61,9 +64,25 @@ bool CAN_Handler::CAN_Handler_Setup()
 
 bool CAN_Handler::CAN_Handler_SetDown()
 {
-    printf("sleeeep\n");
+    qDebug() << "shutdown" << iface;
     UNISTD_OVERRIDE::myCloseCan(CAN_comData.s);
     return 0;
+}
+
+bool CAN_Handler::CAN_Set_Interface(CAN_IFace iface)
+{
+    CAN_Handler_SetDown();
+    switch(iface){
+        case CAN_IFace::VCAN:
+            this->iface = "vcan0";
+            return true;
+        case CAN_IFace::CAN0:
+            this->iface = "can0";
+            return true;
+        default:
+            return false;
+    }
+    CAN_Handler_Setup();
 }
 
 void CAN_Handler::Handle()
