@@ -1,22 +1,9 @@
 #ifndef CAN_ENUM_H
 #define CAN_ENUM_H
 
-enum CAN_ID{
-    /***********Mutual range************/
-
-        All,
-        Heartbeat                           = 0x010,
-
+enum Device_ID{
     /*************RPi range*************/
-
-    //Common commands
-        Init                                = 0x100,
-        DeInit,
-        Error,
-        EmergencyStop,
-
-    //GUI commands
-        CleanPlot,
+        CAN_RPi = 0x100,
 
     /*************Controller 1 range*************/
         CAN_STM1 = 0x300,
@@ -35,6 +22,21 @@ enum CAN_ID{
 
     /*************Controller 6 range*************/
         CAN_STM6 = CAN_STM5 + 0x80
+
+};
+
+enum RPiCommands{
+        All,
+        Heartbeat                           = 0x010,
+
+    //Common commands
+        Init                                = 0x100,
+        DeInit,
+        Error,
+        EmergencyStop,
+
+    //GUI commands
+        CleanPlot,
 
 };
 

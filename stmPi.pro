@@ -2,9 +2,6 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TEMPLATE = app
-DEFINES += QT_DEPRECATED_WARNINGS
-
 CONFIG += c++11
 CONFIG += qwt
 
@@ -38,5 +35,7 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /home/pi/Qt_Projects/$${TARGET}
 !isEmpty(target.path): INSTALLS += target
 
-INCLUDEPATH += $$PWD/../../../usr/include
-DEPENDPATH += $$PWD/../../../usr/include
+#unix:!macx: LIBS += -L$$PWD/../../../usr/local/qwt-6.1.6/lib/ -lqwt
+
+INCLUDEPATH += $$PWD/../../../usr/local/qwt-6.1.6/include
+DEPENDPATH += $$PWD/../../../usr/local/qwt-6.1.6/include
