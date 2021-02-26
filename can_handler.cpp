@@ -100,3 +100,18 @@ void CAN_Handler::Handle()
 CAN_Struct* CAN_Handler::getCAN_Struct(){
     return &CAN_comData;
 }
+
+uint32_t toCanId(Device_ID device, ControllerCommand command)
+{
+    return (uint32_t)device + (uint32_t)command;
+}
+
+uint32_t toCanId(Device_ID device, ControllerData dataType)
+{
+    return (uint32_t)device + (uint32_t)dataType;
+}
+
+uint32_t toCanId(Device_ID device, RPiCommand command)
+{
+    return (uint32_t)device + (uint32_t)command;
+}

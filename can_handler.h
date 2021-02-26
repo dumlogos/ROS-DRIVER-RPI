@@ -66,4 +66,8 @@ signals:
 
 };
 
+uint32_t toCanId(Device_ID device, ControllerCommand command);
+uint32_t toCanId(Device_ID device, ControllerData dataType);
+uint32_t toCanId(Device_ID device, RPiCommand command);
+
 #endif // CAN_HANDLER_H

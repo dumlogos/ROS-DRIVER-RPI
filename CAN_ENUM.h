@@ -2,54 +2,48 @@
 #define CAN_ENUM_H
 
 enum Device_ID{
+    /***All Range***/
+        CAN_All,
     /*************RPi range*************/
         CAN_RPi = 0x100,
-
     /*************Controller 1 range*************/
-        CAN_STM1 = 0x300,
-
+        CAN_STM1 = CAN_RPi + 0x200,
     /*************Controller 2 range*************/
         CAN_STM2 = CAN_STM1 + 0x80,
-
     /*************Controller 3 range*************/
         CAN_STM3 = CAN_STM2 + 0x80,
-
     /*************Controller 4 range*************/
         CAN_STM4 = CAN_STM3 + 0x80,
-
     /*************Controller 5 range*************/
         CAN_STM5 = CAN_STM4 + 0x80,
-
     /*************Controller 6 range*************/
         CAN_STM6 = CAN_STM5 + 0x80
 
 };
 
-enum RPiCommands{
+enum RPiCommand{
         All,
-        Heartbeat                           = 0x010,
-
+        Heartbeat,
     //Common commands
-        Init                                = 0x100,
+        Init,
         DeInit,
         Error,
         EmergencyStop,
-
-    //GUI commands
-        CleanPlot,
-
-};
-
-
-enum ControllerCommands{
-        ConnectionAcknowledge,
-        Disconnection,
-
-
     //Robot control commands
         MovingStart,
         MovingStop,
+    //GUI commands
+        T_CleanPlot,
+        R_CleanPlot
+};
 
+
+enum ControllerCommand{
+        ConnectionAcknowledge = R_CleanPlot + 1,
+        Disconnection,
+    //Robot control commands
+        MotorMoved,
+        MotorStopped,
     //Controller commands
         HeartbeatRespond,
         RegulatorRatioTransmitRequest,
@@ -93,12 +87,12 @@ enum CAN_IFace{
 };
 
 enum ControllerList{
-    STM1 = 1,
-    STM2,
-    STM3,
-    STM4,
-    STM5,
-    STM6
+       STM1 = 1,
+       STM2,
+       STM3,
+       STM4,
+       STM5,
+       STM6
 };
 
 

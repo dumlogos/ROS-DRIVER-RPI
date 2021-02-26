@@ -3,7 +3,6 @@
 
 #include "can_handler.h"
 
-
 #include <qwt_plot.h>
 #include <qwt_interval.h>
 #include <qwt_system_clock.h>
@@ -41,7 +40,6 @@ private:
     QDoubleValidator *velocityParameterValidator;
     QDoubleValidator *PIDratioParameterValidator;
 
-
     QwtPlotCurve *angleCurve;
     QwtPlotCurve *velocityCurve;
     QVector<QPointF> anglePlotPoints;
@@ -76,9 +74,10 @@ private slots:
     void on_clearPlotButton_2_released();
 
 signals:
-    void allowTransmitState(DriverState state);
-    void allowTransmitRatio(float ratio, CAN_ID id);
-    void allowTransmitAngle(float angle);
+    void allowTransmitCommand(Device_ID device, ControllerCommand cntrCmnd, uint8_t *data = nullptr);
+    void allowTransmitCommand(Device_ID device, RPiCommand rpiCmnd, uint8_t *data = nullptr);
+    void allowTransmitRatio(float ratio, Device_ID device, ControllerData ratioType);
+    void allowTransmitAngle(float angle, Device_ID device);
 
 
 

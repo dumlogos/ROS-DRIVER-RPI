@@ -42,24 +42,30 @@ MainWindow::MainWindow(QWidget *parent)
 
     CAN_handler = new CAN_Handler(this);
 
-    qRegisterMetaType<DriverState>("DriverState");
-    qRegisterMetaType<DriverState>("CAN_ID");
+    qRegisterMetaType<DriverState>("Device_ID");
+    qRegisterMetaType<DriverState>("RPiCommands");
+    qRegisterMetaType<DriverState>("ControllerCommand");
+    qRegisterMetaType<DriverState>("ControllerData");
+
 
     connect(CAN_handler->Receiver, SIGNAL(AngleSignal(double, double)),
                             this, SLOT(angleReceived(double, double)));
     connect(CAN_handler->Receiver, SIGNAL(VelocitySignal(double, double)),
                             this, SLOT(velocityReceived(double, double)));
-    connect(CAN_handler->Receiver, SIGNAL(CleanPlotSignal()),
-                            this, SLOT(on_clearPlotButton_released()));
 
     connect(CAN_handler->Receiver, SIGNAL(CleanPlotSignal()),
+                            this, SLOT(on_clearPlotButton_released()));
+    connect(CAN_handler->Receiver, SIGNAL(CleanPlotSignal()),
             CAN_handler->Transmitter, SLOT(transmitClearPlot()));
-    connect(this, SIGNAL(allowTransmitAngle(float)),
-             CAN_handler->Transmitter, SLOT(transmitAngle(float)));
-    connect(this , SIGNAL(allowTransmitRatio(float, CAN_ID)),
-            CAN_handler->Transmitter, SLOT(transmitRatio(float, CAN_ID)));
-    connect(this , SIGNAL(allowTransmitState(DriverState)),
-            CAN_handler->Transmitter, SLOT(transmitStartBreak(DriverState)));
+
+    connect(this , SIGNAL(allowTransmitAngle(float, Device_ID)),
+            CAN_handler->Transmitter, SLOT(transmitAngle(float, Device_ID)));
+    connect(this , SIGNAL(allowTransmitRatio(float, Device_ID, ControllerData)),
+            CAN_handler->Transmitter, SLOT(transmitRatio(float, Device_ID, ControllerData)));
+    connect(this , SIGNAL(allowTransmitCommand(Device_ID, ControllerCommand, uint8_t*)),
+            CAN_handler->Transmitter, SLOT(transmitCommand(Device_ID, ControllerCommand, uint8_t*)));
+    connect(this , SIGNAL(allowTransmitCommand(Device_ID, RPiCommand, uint8_t*)),
+            CAN_handler->Transmitter, SLOT(transmitCommand(Device_ID, RPiCommand, uint8_t*)));
 
     CAN_handler->Handle();
 }
@@ -73,8 +79,6 @@ MainWindow::~MainWindow()
     delete CAN_handler;
     delete angleCurve;
     delete velocityCurve;
-
-
 }
 
 void MainWindow::rePaint()
@@ -99,30 +103,21 @@ void MainWindow::on_startStopButton_released()
         if(ui->startStopButton->styleSheet() != "QPushButton {background-color: red; border: none; }" ||
            ui->startStopButton->styleSheet() == "QPushButton {background-color: orange; border: none; }"){
                 ui->startStopButton->setStyleSheet("QPushButton {background-color: red; border: none; }");
-                emit allowTransmitAngle(toPointDouble(ui->angleLineEdit->text()));
-                emit allowTransmitState(DriverState::START);
+                emit allowTransmitAngle(toPointDouble(ui->angleLineEdit->text()), Device_ID::CAN_STM1);
+                emit allowTransmitCommand(Device_ID::CAN_STM1, ControllerCommand::MotorMoved);
                 ui->startStopButton->setStyleSheet("QPushButton {background-color: rgb(85, 255, 0); border: none; }");
 
         }
         else{
                 ui->startStopButton->setStyleSheet("QPushButton {background-color: rgb(85, 255, 0); border: none; }");
-                emit allowTransmitState(DriverState::STOP);
+                emit allowTransmitCommand(Device_ID::CAN_STM1, ControllerCommand::MotorStopped);
         }
     }
     else
         ui->startStopButton->setStyleSheet("QPushButton {background-color: orange; border: none; }");
 }
 
-
-
-
-void MainWindow::on_dirButton_released()
-{
-    if(ui->dirButton->styleSheet() != "QPushButton {background-color: lightblue; border: none; }")
-        ui->dirButton->setStyleSheet("QPushButton {background-color: lightblue; border: none; }");
-    else
-        ui->dirButton->setStyleSheet("QPushButton {background-color: yellow; border: none; }");
-}
+/************События приёма данных о положении и скорости**************/
 
 void MainWindow::angleReceived(double angle, double timeStamp)
 {
@@ -131,7 +126,6 @@ void MainWindow::angleReceived(double angle, double timeStamp)
 
     ui->angleLabel->setText("Текущий угол поворота: " + QString::number(angle, 'f', 3));
 }
-
 void MainWindow::velocityReceived(double velocity, double timeStamp)
 {
     qDebug() << "velocity " << velocity << timeStamp;
@@ -140,27 +134,33 @@ void MainWindow::velocityReceived(double velocity, double timeStamp)
     ui->velocityLabel->setText("Текущая угловая скорость: " + QString::number(velocity, 'f', 3));
 }
 
-
-double toPointDouble(QString commaDouble)
-{
-    return commaDouble.replace(",", ".").toDouble();
-}
-
-
-
+/************Кнопки очистки графиков и смены состояния**************/
 void MainWindow::on_clearPlotButton_released()
 {
     anglePlotPoints.clear();
     velocityPlotPoints.clear();
     rePaint();
 }
+void MainWindow::on_clearPlotButton_2_released()
+{
+    emit allowTransmitCommand(Device_ID::CAN_All, RPiCommand::T_CleanPlot);
+}
+void MainWindow::on_dirButton_released()
+{
+    if(ui->dirButton->styleSheet() != "QPushButton {background-color: lightblue; border: none; }")
+        ui->dirButton->setStyleSheet("QPushButton {background-color: lightblue; border: none; }");
+    else
+        ui->dirButton->setStyleSheet("QPushButton {background-color: yellow; border: none; }");
+}
 
+/************Кнопки отправки коэффициентов регулирования**************/
 void MainWindow::on_anglePButton_released()
 {
     if(ui->anglePLE->hasAcceptableInput()){
         if(ui->anglePButton->styleSheet() != "QPushButton {background-color: red; border: none; }"){
                 ui->anglePButton->setStyleSheet("QPushButton {background-color: red; border: none; }");
-                emit allowTransmitRatio(toPointDouble(ui->anglePLE->text()), CAN_ID::T_AngleProportionalRatio);
+                emit allowTransmitRatio(toPointDouble(ui->anglePLE->text()),
+                                        Device_ID::CAN_STM1, ControllerData::T_PositionProportionalRatio);
                 ui->anglePButton->setStyleSheet("QPushButton {background-color: rgb(85, 255, 0); border: none; }");
 
         }
@@ -169,39 +169,39 @@ void MainWindow::on_anglePButton_released()
         ui->anglePButton->setStyleSheet("QPushButton {background-color: orange; border: none; }");
 
 }
-
 void MainWindow::on_angleIButton_released()
 {
     if(ui->angleILE->hasAcceptableInput()){
         if(ui->angleIButton->styleSheet() != "QPushButton {background-color: red; border: none; }"){
                 ui->angleIButton->setStyleSheet("QPushButton {background-color: red; border: none; }");
-                emit allowTransmitRatio(toPointDouble(ui->angleILE->text()), CAN_ID::T_AngleIntegralRatio);
+                emit allowTransmitRatio(toPointDouble(ui->angleILE->text()),
+                                        Device_ID::CAN_STM1, ControllerData::T_PositionIntegralRatio);
                 ui->angleIButton->setStyleSheet("QPushButton {background-color: rgb(85, 255, 0); border: none; }");
         }
     }
     else
         ui->angleIButton->setStyleSheet("QPushButton {background-color: orange; border: none; }");
 }
-
 void MainWindow::on_angleDButton_released()
 {
     if(ui->angleDLE->hasAcceptableInput()){
         if(ui->angleDButton->styleSheet() != "QPushButton {background-color: red; border: none; }"){
                 ui->angleDButton->setStyleSheet("QPushButton {background-color: red; border: none; }");
-                emit allowTransmitRatio(toPointDouble(ui->angleDLE->text()), CAN_ID::T_AngleDifferentialRatio);
+                emit allowTransmitRatio(toPointDouble(ui->angleDLE->text()),
+                                        Device_ID::CAN_STM1, ControllerData::T_PositionDifferentialRatio);
                 ui->angleDButton->setStyleSheet("QPushButton {background-color: rgb(85, 255, 0); border: none; }");
         }
     }
     else
         ui->angleDButton->setStyleSheet("QPushButton {background-color: orange; border: none; }");
 }
-
 void MainWindow::on_velocityPButton_released()
 {
     if(ui->velocityPLE->hasAcceptableInput()){
         if(ui->velocityPButton->styleSheet() != "QPushButton {background-color: red; border: none; }"){
                 ui->velocityPButton->setStyleSheet("QPushButton {background-color: red; border: none; }");
-                emit allowTransmitRatio(toPointDouble(ui->velocityPLE->text()), CAN_ID::T_VelocityProportionalRatio);
+                emit allowTransmitRatio(toPointDouble(ui->velocityPLE->text()),
+                                        Device_ID::CAN_STM1, ControllerData::T_SpeedProportionalRatio);
                 ui->velocityPButton->setStyleSheet("QPushButton {background-color: rgb(85, 255, 0); border: none; }");
         }
     }
@@ -209,26 +209,26 @@ void MainWindow::on_velocityPButton_released()
         ui->velocityPButton->setStyleSheet("QPushButton {background-color: orange; border: none; }");
 
 }
-
 void MainWindow::on_velocityIButton_released()
 {
     if(ui->velocityILE->hasAcceptableInput()){
         if(ui->velocityIButton->styleSheet() != "QPushButton {background-color: red; border: none; }"){
                 ui->velocityIButton->setStyleSheet("QPushButton {background-color: red; border: none; }");
-                emit allowTransmitRatio(toPointDouble(ui->velocityILE->text()), CAN_ID::T_VelocityIntegralRatio);
+                emit allowTransmitRatio(toPointDouble(ui->velocityILE->text()),
+                                        Device_ID::CAN_STM1, ControllerData::T_SpeedIntegralRatio);
                 ui->velocityIButton->setStyleSheet("QPushButton {background-color: rgb(85, 255, 0); border: none; }");
         }
     }
     else
         ui->velocityIButton->setStyleSheet("QPushButton {background-color: orange; border: none; }");
 }
-
 void MainWindow::on_velocityDButton_released()
 {
     if(ui->velocityDLE->hasAcceptableInput()){
         if(ui->velocityDButton->styleSheet() != "QPushButton {background-color: red; border: none; }"){
                 ui->velocityDButton->setStyleSheet("QPushButton {background-color: red; border: none; }");
-                emit allowTransmitRatio(toPointDouble(ui->velocityDLE->text()), CAN_ID::T_VelocityDifferentialRatio);
+                emit allowTransmitRatio(toPointDouble(ui->velocityDLE->text()),
+                                        Device_ID::CAN_STM1, ControllerData::T_SpeedDifferentialRatio);
                 ui->velocityDButton->setStyleSheet("QPushButton {background-color: rgb(85, 255, 0); border: none; }");
         }
     }
@@ -236,8 +236,8 @@ void MainWindow::on_velocityDButton_released()
         ui->velocityDButton->setStyleSheet("QPushButton {background-color: orange; border: none; }");
 }
 
-void MainWindow::on_clearPlotButton_2_released()
+/************Вспомогательные функции**************/
+double toPointDouble(QString commaDouble)
 {
-    emit allowTransmitRatio(toPointDouble(ui->velocityDLE->text()), CAN_ID::T_ClearPosition);
-
+    return commaDouble.replace(",", ".").toDouble();
 }

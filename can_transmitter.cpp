@@ -4,10 +4,9 @@ CAN_Transmitter::CAN_Transmitter(CAN_Handler *parent)
 {
     parentCAN_Handler = parent;
     CAN_comData = parentCAN_Handler->getCAN_Struct();
-
 }
 
-void CAN_Transmitter::dataTransmit(u_int8_t msg[], u_int32_t msgId, u_int32_t msgDLC)
+bool CAN_Transmitter::dataTransmit(u_int8_t msg[], u_int32_t msgId, u_int32_t msgDLC)
 {
     CAN_comData->frame.can_dlc = msgDLC;
     CAN_comData->frame.can_id = msgId;
@@ -16,70 +15,100 @@ void CAN_Transmitter::dataTransmit(u_int8_t msg[], u_int32_t msgId, u_int32_t ms
     qDebug() << &(CAN_comData->frame.can_id);
     CAN_comData->nbytes = write(CAN_comData->s, &(CAN_comData->frame), sizeof(CAN_comData->frame));
     if(CAN_comData->nbytes != sizeof(CAN_comData->frame))
+    {
         printf("Send Error frame[0]!\r\n");
+        return false;
+    }
+    return true;
 
 }
 
-void CAN_Transmitter::dataTransmit(u_int32_t msgId, u_int32_t msgDLC)
+bool CAN_Transmitter::dataTransmit(u_int32_t msgId, u_int32_t msgDLC)
 {
     CAN_comData->frame.can_dlc = msgDLC;
     CAN_comData->frame.can_id = msgId;
     qDebug() << &(CAN_comData->frame.can_id);
     CAN_comData->nbytes = write(CAN_comData->s, &(CAN_comData->frame), sizeof(CAN_comData->frame));
-    if(CAN_comData->nbytes != sizeof(CAN_comData->frame))
+    if(CAN_comData->nbytes != sizeof(CAN_comData->frame)){
         printf("Send Error frame[0]!\r\n");
+        return false;
+    }
+    return true;
 }
 
-void CAN_Transmitter::transmitAngle(float angle)
+bool CAN_Transmitter::transmitCommand(uint32_t cmndId,  uint8_t *data)
 {
-    CAN_comData->RT_data.floats.fl1 = angle;
+    if(data != nullptr)
+        return dataTransmit(data, cmndId, sizeof(data));
+    else
+        return dataTransmit(cmndId);
+
+}
+bool CAN_Transmitter::transmitCommand(Device_ID device, RPiCommand rpiCommand, uint8_t *data)
+{
+   return transmitCommand(toCanId(device, rpiCommand), data);
+}
+bool CAN_Transmitter::transmitCommand(Device_ID device, ControllerCommand cntrCommand, uint8_t *data)
+{
+   return transmitCommand(toCanId(device, cntrCommand), data);
+}
+
+void CAN_Transmitter::transmitAngle(float position, Device_ID device)
+{
+    CAN_comData->RT_data.floats.fl1 = position;
     for(int i = 0; i < 4; i++){
         CAN_comData->frame.data[i] = CAN_comData->RT_data.uintData[3-i];
     }
-    dataTransmit(CAN_ID::T_Angle, 4);
-
+    dataTransmit(toCanId(device, ControllerData::T_Position), 4);
 }
 
 
-void CAN_Transmitter::transmitVelocity(float velocity)
+void CAN_Transmitter::transmitVelocity(float speed, Device_ID device)
 {
-    CAN_comData->RT_data.floats.fl1 = velocity;
+    CAN_comData->RT_data.floats.fl1 = speed;
     for(int i = 0; i < 4; i++){
 
         CAN_comData->frame.data[i] = CAN_comData->RT_data.uintData[3-i];
     }
-    dataTransmit(CAN_ID::T_Velocity, 4);
+    dataTransmit(toCanId(device, ControllerData::T_Speed), 4);
 
 }
 
-void CAN_Transmitter::transmitStartBreak(DriverState state)
+void CAN_Transmitter::transmitStartBreak(DriverState state, Device_ID device)
 {
     u_int8_t startState[1];
 
     if(state == DriverState::START){
         startState[0] = {DriverState::START};
-        dataTransmit(startState, CAN_ID::T_StartBreak, sizeof(startState));
+        dataTransmit(startState,
+                     toCanId(device, ControllerCommand::DriverStop),
+                     sizeof(startState));
     }
     else if (state == DriverState::STOP){
         startState[0] = {DriverState::STOP};
-        dataTransmit(startState, CAN_ID::T_StartBreak, sizeof(startState));
+        dataTransmit(startState,
+                     toCanId(device, ControllerCommand::DriverStop),
+                     sizeof(startState));
     }
 
 }
+
+
 
 
 void CAN_Transmitter::transmitClearPlot()
 {
-    dataTransmit(CAN_ID::T_CleanPlot, 0);
+    for(int i = 0; i<6; ++i)
+        dataTransmit(toCanId(Device_ID(Device_ID::CAN_STM1 + i*0x80), RPiCommand::T_CleanPlot), 0);
 }
 
-void CAN_Transmitter::transmitRatio(float ratio, CAN_ID id)
+void CAN_Transmitter::transmitRatio(float ratio, Device_ID device, ControllerData ratioType)
 {
     CAN_comData->RT_data.floats.fl1 = ratio;
     for(int i = 0; i < 4; i++){
         CAN_comData->frame.data[i] = CAN_comData->RT_data.uintData[3-i];
     }
-    dataTransmit(CAN_comData->frame.data, id, 4);
+    dataTransmit(CAN_comData->frame.data, toCanId(device, ratioType), 4);
 }
 
 
