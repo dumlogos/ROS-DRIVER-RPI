@@ -43,7 +43,7 @@ MainWindow::MainWindow(QWidget *parent)
     CAN_handler = new CAN_Handler(this);
 
     qRegisterMetaType<DriverState>("Device_ID");
-    qRegisterMetaType<DriverState>("RPiCommands");
+    qRegisterMetaType<DriverState>("RPiCommand");
     qRegisterMetaType<DriverState>("ControllerCommand");
     qRegisterMetaType<DriverState>("ControllerData");
 
@@ -100,21 +100,21 @@ void MainWindow::rePaint()
 void MainWindow::on_startStopButton_released()
 {
     if(ui->angleLineEdit->hasAcceptableInput() /*&& ui->velocityLineEdit->hasAcceptableInput()*/){
-        if(ui->startStopButton->styleSheet() != "QPushButton {background-color: red; border: none; }" ||
-           ui->startStopButton->styleSheet() == "QPushButton {background-color: orange; border: none; }"){
-                ui->startStopButton->setStyleSheet("QPushButton {background-color: red; border: none; }");
+        if(ui->startStopButton->styleSheet() != "QPushButton {background-color: red; }" ||
+           ui->startStopButton->styleSheet() == "QPushButton {background-color: orange;  }"){
+                ui->startStopButton->setStyleSheet("QPushButton {background-color: red; }");
                 emit allowTransmitAngle(toPointDouble(ui->angleLineEdit->text()), Device_ID::CAN_STM1);
                 emit allowTransmitCommand(Device_ID::CAN_STM1, ControllerCommand::MotorMoved);
-                ui->startStopButton->setStyleSheet("QPushButton {background-color: rgb(85, 255, 0); border: none; }");
+                ui->startStopButton->setStyleSheet("QPushButton {background-color: rgb(85, 255, 0);}");
 
         }
         else{
-                ui->startStopButton->setStyleSheet("QPushButton {background-color: rgb(85, 255, 0); border: none; }");
+                ui->startStopButton->setStyleSheet("QPushButton {background-color: rgb(85, 255, 0);}");
                 emit allowTransmitCommand(Device_ID::CAN_STM1, ControllerCommand::MotorStopped);
         }
     }
     else
-        ui->startStopButton->setStyleSheet("QPushButton {background-color: orange; border: none; }");
+        ui->startStopButton->setStyleSheet("QPushButton {background-color: orange;}");
 }
 
 /************События приёма данных о положении и скорости**************/
@@ -157,83 +157,83 @@ void MainWindow::on_dirButton_released()
 void MainWindow::on_anglePButton_released()
 {
     if(ui->anglePLE->hasAcceptableInput()){
-        if(ui->anglePButton->styleSheet() != "QPushButton {background-color: red; border: none; }"){
-                ui->anglePButton->setStyleSheet("QPushButton {background-color: red; border: none; }");
+        if(ui->anglePButton->styleSheet() != "QPushButton {background-color: red;}"){
+                ui->anglePButton->setStyleSheet("QPushButton {background-color: red;}");
                 emit allowTransmitRatio(toPointDouble(ui->anglePLE->text()),
                                         Device_ID::CAN_STM1, ControllerData::T_PositionProportionalRatio);
-                ui->anglePButton->setStyleSheet("QPushButton {background-color: rgb(85, 255, 0); border: none; }");
+                ui->anglePButton->setStyleSheet("QPushButton {background-color: rgb(85, 255, 0);}");
 
         }
     }
     else
-        ui->anglePButton->setStyleSheet("QPushButton {background-color: orange; border: none; }");
+        ui->anglePButton->setStyleSheet("QPushButton {background-color: orange;}");
 
 }
 void MainWindow::on_angleIButton_released()
 {
     if(ui->angleILE->hasAcceptableInput()){
-        if(ui->angleIButton->styleSheet() != "QPushButton {background-color: red; border: none; }"){
-                ui->angleIButton->setStyleSheet("QPushButton {background-color: red; border: none; }");
+        if(ui->angleIButton->styleSheet() != "QPushButton {background-color: red;}"){
+                ui->angleIButton->setStyleSheet("QPushButton {background-color: red;}");
                 emit allowTransmitRatio(toPointDouble(ui->angleILE->text()),
                                         Device_ID::CAN_STM1, ControllerData::T_PositionIntegralRatio);
-                ui->angleIButton->setStyleSheet("QPushButton {background-color: rgb(85, 255, 0); border: none; }");
+                ui->angleIButton->setStyleSheet("QPushButton {background-color: rgb(85, 255, 0);}");
         }
     }
     else
-        ui->angleIButton->setStyleSheet("QPushButton {background-color: orange; border: none; }");
+        ui->angleIButton->setStyleSheet("QPushButton {background-color: orange;}");
 }
 void MainWindow::on_angleDButton_released()
 {
     if(ui->angleDLE->hasAcceptableInput()){
-        if(ui->angleDButton->styleSheet() != "QPushButton {background-color: red; border: none; }"){
-                ui->angleDButton->setStyleSheet("QPushButton {background-color: red; border: none; }");
+        if(ui->angleDButton->styleSheet() != "QPushButton {background-color: red;}"){
+                ui->angleDButton->setStyleSheet("QPushButton {background-color: red;}");
                 emit allowTransmitRatio(toPointDouble(ui->angleDLE->text()),
                                         Device_ID::CAN_STM1, ControllerData::T_PositionDifferentialRatio);
-                ui->angleDButton->setStyleSheet("QPushButton {background-color: rgb(85, 255, 0); border: none; }");
+                ui->angleDButton->setStyleSheet("QPushButton {background-color: rgb(85, 255, 0);}");
         }
     }
     else
-        ui->angleDButton->setStyleSheet("QPushButton {background-color: orange; border: none; }");
+        ui->angleDButton->setStyleSheet("QPushButton {background-color: orange;}");
 }
 void MainWindow::on_velocityPButton_released()
 {
     if(ui->velocityPLE->hasAcceptableInput()){
-        if(ui->velocityPButton->styleSheet() != "QPushButton {background-color: red; border: none; }"){
-                ui->velocityPButton->setStyleSheet("QPushButton {background-color: red; border: none; }");
+        if(ui->velocityPButton->styleSheet() != "QPushButton {background-color: red;}"){
+                ui->velocityPButton->setStyleSheet("QPushButton {background-color: red;}");
                 emit allowTransmitRatio(toPointDouble(ui->velocityPLE->text()),
                                         Device_ID::CAN_STM1, ControllerData::T_SpeedProportionalRatio);
-                ui->velocityPButton->setStyleSheet("QPushButton {background-color: rgb(85, 255, 0); border: none; }");
+                ui->velocityPButton->setStyleSheet("QPushButton {background-color: rgb(85, 255, 0);}");
         }
     }
     else
-        ui->velocityPButton->setStyleSheet("QPushButton {background-color: orange; border: none; }");
+        ui->velocityPButton->setStyleSheet("QPushButton {background-color: orange;}");
 
 }
 void MainWindow::on_velocityIButton_released()
 {
     if(ui->velocityILE->hasAcceptableInput()){
-        if(ui->velocityIButton->styleSheet() != "QPushButton {background-color: red; border: none; }"){
-                ui->velocityIButton->setStyleSheet("QPushButton {background-color: red; border: none; }");
+        if(ui->velocityIButton->styleSheet() != "QPushButton {background-color: red;}"){
+                ui->velocityIButton->setStyleSheet("QPushButton {background-color: red;}");
                 emit allowTransmitRatio(toPointDouble(ui->velocityILE->text()),
                                         Device_ID::CAN_STM1, ControllerData::T_SpeedIntegralRatio);
-                ui->velocityIButton->setStyleSheet("QPushButton {background-color: rgb(85, 255, 0); border: none; }");
+                ui->velocityIButton->setStyleSheet("QPushButton {background-color: rgb(85, 255, 0);}");
         }
     }
     else
-        ui->velocityIButton->setStyleSheet("QPushButton {background-color: orange; border: none; }");
+        ui->velocityIButton->setStyleSheet("QPushButton {background-color: orange;}");
 }
 void MainWindow::on_velocityDButton_released()
 {
     if(ui->velocityDLE->hasAcceptableInput()){
-        if(ui->velocityDButton->styleSheet() != "QPushButton {background-color: red; border: none; }"){
-                ui->velocityDButton->setStyleSheet("QPushButton {background-color: red; border: none; }");
+        if(ui->velocityDButton->styleSheet() != "QPushButton {background-color: red;}"){
+                ui->velocityDButton->setStyleSheet("QPushButton {background-color: red;}");
                 emit allowTransmitRatio(toPointDouble(ui->velocityDLE->text()),
                                         Device_ID::CAN_STM1, ControllerData::T_SpeedDifferentialRatio);
-                ui->velocityDButton->setStyleSheet("QPushButton {background-color: rgb(85, 255, 0); border: none; }");
+                ui->velocityDButton->setStyleSheet("QPushButton {background-color: rgb(85, 255, 0);}");
         }
     }
     else
-        ui->velocityDButton->setStyleSheet("QPushButton {background-color: orange; border: none; }");
+        ui->velocityDButton->setStyleSheet("QPushButton {background-color: orange;}");
 }
 
 /************Вспомогательные функции**************/
