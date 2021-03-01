@@ -50,7 +50,7 @@ public:
 
     bool CAN_Handler_Setup();
     bool CAN_Handler_SetDown();
-
+    QString getIface();
 
 
     CAN_Struct* getCAN_Struct();

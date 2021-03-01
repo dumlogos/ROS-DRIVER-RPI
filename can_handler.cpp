@@ -32,13 +32,14 @@ bool CAN_Handler::CAN_Handler_Setup()
     }
 
     //2.Specify can0 device
-    qDebug() << iface.toStdString().c_str() << "connected";
     strcpy(CAN_comData.ifr.ifr_name, iface.toStdString().c_str());
      CAN_comData.ret = ioctl(CAN_comData.s, SIOCGIFINDEX, &(CAN_comData.ifr));
     if (CAN_comData.ret < 0) {
-        perror("ioctl failed");
+        qDebug() << iface.toStdString().c_str() << "connection fault";
         return 1;
     }
+    else
+        qDebug() << iface.toStdString().c_str() << "connected";
 
     //3.Bind the socket to can0
     CAN_comData.addr.can_family = AF_CAN;
@@ -69,20 +70,25 @@ bool CAN_Handler::CAN_Handler_SetDown()
     return 0;
 }
 
+QString CAN_Handler::getIface()
+{
+    return iface;
+}
+
 bool CAN_Handler::CAN_Set_Interface(CAN_IFace iface)
 {
     CAN_Handler_SetDown();
     switch(iface){
         case CAN_IFace::VCAN:
             this->iface = "vcan0";
-            return true;
+            break;
         case CAN_IFace::CAN0:
             this->iface = "can0";
-            return true;
+            break;
         default:
             return false;
     }
-    CAN_Handler_Setup();
+    return CAN_Handler_Setup();
 }
 
 void CAN_Handler::Handle()
@@ -94,7 +100,6 @@ void CAN_Handler::Handle()
     Receiver->moveToThread(receiverThread);
     transmitterThread->start();
     receiverThread->start();
-
 }
 
 CAN_Struct* CAN_Handler::getCAN_Struct(){

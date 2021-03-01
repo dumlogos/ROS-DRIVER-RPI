@@ -97,26 +97,6 @@ void MainWindow::rePaint()
 
 }
 
-void MainWindow::on_startStopButton_released()
-{
-    if(ui->angleLineEdit->hasAcceptableInput() /*&& ui->velocityLineEdit->hasAcceptableInput()*/){
-        if(ui->startStopButton->styleSheet() != "QPushButton {background-color: red; }" ||
-           ui->startStopButton->styleSheet() == "QPushButton {background-color: orange;  }"){
-                ui->startStopButton->setStyleSheet("QPushButton {background-color: red; }");
-                emit allowTransmitAngle(toPointDouble(ui->angleLineEdit->text()), Device_ID::CAN_STM1);
-                emit allowTransmitCommand(Device_ID::CAN_STM1, ControllerCommand::MotorMoved);
-                ui->startStopButton->setStyleSheet("QPushButton {background-color: rgb(85, 255, 0);}");
-
-        }
-        else{
-                ui->startStopButton->setStyleSheet("QPushButton {background-color: rgb(85, 255, 0);}");
-                emit allowTransmitCommand(Device_ID::CAN_STM1, ControllerCommand::MotorStopped);
-        }
-    }
-    else
-        ui->startStopButton->setStyleSheet("QPushButton {background-color: orange;}");
-}
-
 /************События приёма данных о положении и скорости**************/
 
 void MainWindow::angleReceived(double angle, double timeStamp)
@@ -147,10 +127,29 @@ void MainWindow::on_clearPlotButton_2_released()
 }
 void MainWindow::on_dirButton_released()
 {
-    if(ui->dirButton->styleSheet() != "QPushButton {background-color: lightblue; border: none; }")
-        ui->dirButton->setStyleSheet("QPushButton {background-color: lightblue; border: none; }");
+    if(ui->dirButton->styleSheet() != "QPushButton {background-color: rgb(194, 204, 126);}")
+        ui->dirButton->setStyleSheet("QPushButton {background-color: rgb(194, 204, 126);}");
     else
-        ui->dirButton->setStyleSheet("QPushButton {background-color: yellow; border: none; }");
+        ui->dirButton->setStyleSheet("QPushButton {background-color: yellow;}");
+}
+void MainWindow::on_startStopButton_released()
+{
+    if(ui->angleLineEdit->hasAcceptableInput() /*&& ui->velocityLineEdit->hasAcceptableInput()*/){
+        if(ui->startStopButton->styleSheet() != "QPushButton {background-color: red; }" ||
+           ui->startStopButton->styleSheet() == "QPushButton {background-color: orange;  }"){
+                ui->startStopButton->setStyleSheet("QPushButton {background-color: red; }");
+                emit allowTransmitAngle(toPointDouble(ui->angleLineEdit->text()), Device_ID::CAN_STM1);
+                emit allowTransmitCommand(Device_ID::CAN_STM1, ControllerCommand::MotorMoved);
+                ui->startStopButton->setStyleSheet("QPushButton {background-color: rgb(85, 255, 0);}");
+
+        }
+        else{
+                ui->startStopButton->setStyleSheet("QPushButton {background-color: rgb(85, 255, 0);}");
+                emit allowTransmitCommand(Device_ID::CAN_STM1, ControllerCommand::MotorStopped);
+        }
+    }
+    else
+        ui->startStopButton->setStyleSheet("QPushButton {background-color: orange;}");
 }
 
 /************Кнопки отправки коэффициентов регулирования**************/
@@ -236,8 +235,20 @@ void MainWindow::on_velocityDButton_released()
         ui->velocityDButton->setStyleSheet("QPushButton {background-color: orange;}");
 }
 
+/************События выбора CAN-интерфейса**************/
+void MainWindow::on_updateIfaceBtn_released()
+{
+    QString iface = CAN_handler->getIface();
+    if(ui->canRadioBtn->isChecked() && iface!="can0")
+        CAN_handler->CAN_Set_Interface(CAN_IFace::CAN0);
+    else if(ui->vcanRadioBtn->isChecked() && iface!="vcan0")
+        CAN_handler->CAN_Set_Interface(CAN_IFace::VCAN);
+
+}
 /************Вспомогательные функции**************/
 double toPointDouble(QString commaDouble)
 {
     return commaDouble.replace(",", ".").toDouble();
 }
+
+
