@@ -42,8 +42,10 @@ private:
 
     QwtPlotCurve *angleCurve;
     QwtPlotCurve *velocityCurve;
+    QwtPlotCurve *accelerationCurve;
     QVector<QPointF> anglePlotPoints;
     QVector<QPointF> velocityPlotPoints;
+    QVector<QPointF> accelerationPlotPoints;
 
     QTimer *plotTimer;
 

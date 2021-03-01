@@ -11,15 +11,25 @@ MainWindow::MainWindow(QWidget *parent)
 
     angleCurve = new QwtPlotCurve("S(t)");
     velocityCurve = new QwtPlotCurve("U(t)");
+    accelerationCurve = new QwtPlotCurve("A(t)");
 
-    angleCurve->setStyle(QwtPlotCurve::Lines);
-    velocityCurve->setStyle(QwtPlotCurve::Lines);
     angleCurve->setPen(QPen(Qt::blue));
-    velocityCurve->setPen(QPen(Qt::red));
+    angleCurve->setStyle(QwtPlotCurve::Lines);
     angleCurve->attach(ui->anglePlot);
+    velocityCurve->setPen(QPen(Qt::red));
+    velocityCurve->setStyle(QwtPlotCurve::Lines);
     velocityCurve->attach(ui->velocityPlot);
+
+    ui->anglePlot->setAxisTitle(QwtPlot::Axis::xBottom, "Время");
+    ui->anglePlot->setAxisTitle(QwtPlot::Axis::yLeft, "Положение");
+    ui->velocityPlot->setAxisTitle(QwtPlot::Axis::xBottom, "Время");
+    ui->velocityPlot->setAxisTitle(QwtPlot::Axis::yLeft, "Скорость");
+    ui->accelerationPlot->setAxisTitle(QwtPlot::Axis::xBottom, "Время");
+    ui->accelerationPlot->setAxisTitle(QwtPlot::Axis::yLeft, "Ускорение");
+
     ui->anglePlot->replot();
     ui->velocityPlot->replot();
+    ui->accelerationPlot->replot();
 
     plotTimer = new QTimer(this);
     connect(plotTimer, SIGNAL(timeout()), this, SLOT(rePaint()));
@@ -88,12 +98,16 @@ void MainWindow::rePaint()
         anglePlotPoints.removeFirst();
     if(velocityPlotPoints.count() >= 250)
         velocityPlotPoints.removeFirst();
+    if(accelerationPlotPoints.count() >= 250)
+        accelerationPlotPoints.removeFirst();
     }
     angleCurve->setSamples(anglePlotPoints);
     velocityCurve->setSamples(velocityPlotPoints);
+    accelerationCurve->setSamples(accelerationPlotPoints);
 
     ui->anglePlot->replot();
     ui->velocityPlot->replot();
+    ui->accelerationPlot->replot();
 
 }
 
