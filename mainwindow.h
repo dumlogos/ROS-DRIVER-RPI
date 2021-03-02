@@ -4,6 +4,10 @@
 #include "can_handler.h"
 
 #include <qwt_plot.h>
+#include <qwt_plot_magnifier.h>
+#include <qwt_plot_panner.h>
+#include <qwt_plot_picker.h>
+#include <qwt_picker_machine.h>
 #include <qwt_interval.h>
 #include <qwt_system_clock.h>
 #include <qwt_plot_grid.h>
@@ -46,6 +50,8 @@ private:
     QVector<QPointF> anglePlotPoints;
     QVector<QPointF> velocityPlotPoints;
     QVector<QPointF> accelerationPlotPoints;
+
+
 
     QTimer *plotTimer;
 

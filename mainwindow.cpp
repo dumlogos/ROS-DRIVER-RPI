@@ -13,6 +13,55 @@ MainWindow::MainWindow(QWidget *parent)
     velocityCurve = new QwtPlotCurve("U(t)");
     accelerationCurve = new QwtPlotCurve("A(t)");
 
+
+    QwtPlotGrid *angleGrid = new QwtPlotGrid();
+    QwtPlotGrid *velocityGrid = new QwtPlotGrid();
+    QwtPlotGrid *accelerationGrid= new QwtPlotGrid();
+    angleGrid->setMajorPen(QPen(Qt::gray, 1));
+    angleGrid->attach(ui->anglePlot);
+    velocityGrid->setMajorPen(QPen(Qt::gray, 1));
+    velocityGrid->attach(ui->velocityPlot);
+    accelerationGrid->setMajorPen(QPen(Qt::gray, 1));
+    accelerationGrid->attach(ui->accelerationPlot);
+
+    QwtPlotMagnifier *anglePlotMagnifier = new QwtPlotMagnifier(ui->anglePlot->canvas());
+    QwtPlotMagnifier *velocityPlotMagnifier = new QwtPlotMagnifier(ui->velocityPlot->canvas());
+    QwtPlotMagnifier *accelerationPlotMagnifier = new QwtPlotMagnifier(ui->accelerationPlot->canvas());
+    anglePlotMagnifier->setMouseButton(Qt::MidButton);
+    velocityPlotMagnifier->setMouseButton(Qt::MidButton);
+    accelerationPlotMagnifier->setMouseButton(Qt::MidButton);
+
+    QwtPlotPanner *anglePlotPanner = new QwtPlotPanner(ui->anglePlot->canvas());
+    QwtPlotPanner *velocityPlotPanner = new QwtPlotPanner(ui->velocityPlot->canvas());
+    QwtPlotPanner *accelerationPlotPanner = new QwtPlotPanner(ui->accelerationPlot->canvas());
+    anglePlotPanner->setMouseButton(Qt::RightButton);
+    velocityPlotPanner->setMouseButton(Qt::RightButton);
+    accelerationPlotPanner->setMouseButton(Qt::RightButton);
+
+    QwtPlotPicker *anglePlotPicker = new QwtPlotPicker(QwtPlot::xBottom, QwtPlot::yLeft,
+                                                       QwtPlotPicker::CrossRubberBand,
+                                                       QwtPicker::ActiveOnly,
+                                                       ui->anglePlot->canvas());
+    QwtPlotPicker *velocityPlotPicker = new QwtPlotPicker(QwtPlot::xBottom, QwtPlot::yLeft,
+                                                       QwtPlotPicker::CrossRubberBand,
+                                                       QwtPicker::ActiveOnly,
+                                                       ui->velocityPlot->canvas());
+    QwtPlotPicker *accelerationPlotPicker = new QwtPlotPicker(QwtPlot::xBottom, QwtPlot::yLeft,
+                                                       QwtPlotPicker::CrossRubberBand,
+                                                       QwtPicker::ActiveOnly,
+                                                       ui->accelerationPlot->canvas());
+    anglePlotPicker->setRubberBandPen(QColor(Qt::red));
+    anglePlotPicker->setTrackerPen(QColor(Qt::black));
+    anglePlotPicker->setStateMachine(new QwtPickerDragPointMachine());
+    velocityPlotPicker->setRubberBandPen(QColor(Qt::red));
+    velocityPlotPicker->setTrackerPen(QColor(Qt::black));
+    velocityPlotPicker->setStateMachine(new QwtPickerDragPointMachine());
+    accelerationPlotPicker->setRubberBandPen(QColor(Qt::red));
+    accelerationPlotPicker->setTrackerPen(QColor(Qt::black));
+    accelerationPlotPicker->setStateMachine(new QwtPickerDragPointMachine());
+
+
+
     angleCurve->setPen(QPen(Qt::blue));
     angleCurve->setStyle(QwtPlotCurve::Lines);
     angleCurve->attach(ui->anglePlot);
