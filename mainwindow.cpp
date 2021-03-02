@@ -9,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->setupUi(this);
 
+
     angleCurve = new QwtPlotCurve("S(t)");
     velocityCurve = new QwtPlotCurve("U(t)");
     accelerationCurve = new QwtPlotCurve("A(t)");
@@ -171,6 +172,11 @@ void MainWindow::angleReceived(double angle, double timeStamp)
 }
 void MainWindow::velocityReceived(double velocity, double timeStamp)
 {
+    if(!velocityPlotPoints.isEmpty())
+        accelerationPlotPoints.append(QPointF(timeStamp, (velocity - velocityPlotPoints.last().y())/10/1000));
+    else
+        accelerationPlotPoints.append(QPoint(timeStamp, 0));
+
     qDebug() << "velocity " << velocity << timeStamp;
     velocityPlotPoints.append(QPointF(timeStamp, velocity));
 
