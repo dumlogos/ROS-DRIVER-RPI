@@ -2,7 +2,7 @@
 
 CAN_Handler::CAN_Handler(QWidget *parent) :
     QWidget(parent),
-    iface("vcan0")
+    iface("can0")
 {
     CAN_Handler_Setup();
     Transmitter = new CAN_Transmitter(this);
