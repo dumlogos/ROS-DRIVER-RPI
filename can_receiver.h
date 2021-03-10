@@ -24,13 +24,13 @@ public:
 public slots:
 
     void receiveAll();
-    void compareVars();
 
 signals:
     void AngleSignal(double angle, double timeStamp);
     void VelocitySignal(double velocity, double timeStamp);
     void CurrentSignal(double current, double timeStamp);
     void CleanPlotSignal();
+    void HeartbeatSignal();
 
 
 };

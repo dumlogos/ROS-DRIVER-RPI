@@ -36,10 +36,14 @@ class CAN_Handler : public QWidget
     friend class CAN_Receiver;
 private:
 
-    CAN_Struct CAN_comData;
     QThread *transmitterThread;
     QThread *receiverThread;
+
     QString iface;
+    CAN_Struct CAN_comData;
+
+    QTimer *heartbeatTimer;
+    uint8_t heartbeatRequests;
 
 public:
     CAN_Transmitter *Transmitter;
@@ -57,12 +61,12 @@ public:
     void Handle();
 
 public slots:
+    void HeartbeatTransmit();
+    void HeartbeatReceived();
     bool CAN_Set_Interface(CAN_IFace iface);
 
 signals:
    void ReceiveAllCAN();
-   // void GuiUpdate();
-   // void StartBreakReceived();
 
 };
 

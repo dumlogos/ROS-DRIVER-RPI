@@ -60,17 +60,18 @@ bool CAN_Receiver::dataReceive()
             }
             //emit StartBreakReceived();
         }
+        else if((CAN_comData->frame.can_id == toCanId(Device_ID::CAN_STM1, ControllerCommand::HeartbeatRespond)) ||
+                (CAN_comData->frame.can_id == toCanId(Device_ID::CAN_STM2, ControllerCommand::HeartbeatRespond)) ||
+                (CAN_comData->frame.can_id == toCanId(Device_ID::CAN_STM3, ControllerCommand::HeartbeatRespond)) ||
+                (CAN_comData->frame.can_id == toCanId(Device_ID::CAN_STM4, ControllerCommand::HeartbeatRespond)) ||
+                (CAN_comData->frame.can_id == toCanId(Device_ID::CAN_STM5, ControllerCommand::HeartbeatRespond)) ||
+                (CAN_comData->frame.can_id == toCanId(Device_ID::CAN_STM6, ControllerCommand::HeartbeatRespond)))
+            emit HeartbeatSignal();
         return true;
     }
     return false;
 }
 
-
-
-void CAN_Receiver::compareVars()
-{
-
-}
 
 void CAN_Receiver::receiveAll(){
     while(1){

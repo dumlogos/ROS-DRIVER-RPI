@@ -2,13 +2,20 @@
 
 CAN_Handler::CAN_Handler(QWidget *parent) :
     QWidget(parent),
-    iface("can0")
+    iface("can0"),
+    heartbeatRequests(7)
 {
     CAN_Handler_Setup();
     Transmitter = new CAN_Transmitter(this);
     Receiver = new CAN_Receiver(this);
     transmitterThread = new QThread(this);
     receiverThread = new QThread(this);
+
+    heartbeatTimer = new QTimer(this);
+    connect(heartbeatTimer, SIGNAL(timeout()), this, SLOT(HeartbeatTransmit()));
+    //Изменить!!!!!!!!!!!!!!!!!!!!!!
+    heartbeatTimer->start(20);
+    connect(Receiver, SIGNAL(HeartbeatSignal()), this, SLOT(HeartbeatReceived()));
 }
 
 CAN_Handler::~CAN_Handler(){
@@ -62,17 +69,11 @@ bool CAN_Handler::CAN_Handler_Setup()
 
     return 0;
 }
-
 bool CAN_Handler::CAN_Handler_SetDown()
 {
     qDebug() << "shutdown" << iface;
     UNISTD_OVERRIDE::myCloseCan(CAN_comData.s);
     return 0;
-}
-
-QString CAN_Handler::getIface()
-{
-    return iface;
 }
 
 bool CAN_Handler::CAN_Set_Interface(CAN_IFace iface)
@@ -102,20 +103,34 @@ void CAN_Handler::Handle()
     receiverThread->start();
 }
 
+void CAN_Handler::HeartbeatTransmit()
+{
+    if(heartbeatRequests >= 7){
+        heartbeatRequests = 0;
+        Transmitter->transmitCommand(toCanId(Device_ID::CAN_All, RPiCommand::Heartbeat));
+    }
+}
+void CAN_Handler::HeartbeatReceived()
+{
+    heartbeatRequests++;
+}
+
 CAN_Struct* CAN_Handler::getCAN_Struct(){
     return &CAN_comData;
 }
 
+QString CAN_Handler::getIface()
+{
+    return iface;
+}
 uint32_t toCanId(Device_ID device, ControllerCommand command)
 {
     return (uint32_t)device + (uint32_t)command;
 }
-
 uint32_t toCanId(Device_ID device, ControllerData dataType)
 {
     return (uint32_t)device + (uint32_t)dataType;
 }
-
 uint32_t toCanId(Device_ID device, RPiCommand command)
 {
     return (uint32_t)device + (uint32_t)command;
