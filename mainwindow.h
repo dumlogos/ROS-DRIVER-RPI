@@ -47,11 +47,12 @@ private:
     QwtPlotCurve *angleCurve;
     QwtPlotCurve *velocityCurve;
     QwtPlotCurve *accelerationCurve;
+    QwtPlotCurve *currentCurve;
+
     QVector<QPointF> anglePlotPoints;
     QVector<QPointF> velocityPlotPoints;
     QVector<QPointF> accelerationPlotPoints;
-
-
+    QVector<QPointF> currentPlotPoints;
 
     QTimer *plotTimer;
 
@@ -68,6 +69,8 @@ private slots:
 
     void angleReceived(double angle, double timeStamp);
     void velocityReceived(double velocity, double timeStamp);
+    void currentReceived(double current, double timeStamp);
+
     void on_clearPlotButton_released();
 
     void on_anglePButton_released();

@@ -42,6 +42,14 @@ bool CAN_Receiver::dataReceive()
 
             emit VelocitySignal(CAN_comData->RT_data.floats.fl1, CAN_comData->RT_data.floats.fl2);
         }
+        else if(CAN_comData->frame.can_id == toCanId(Device_ID::CAN_STM1, ControllerData::R_Current)){
+            for(int i = 0; i < 4; i++){
+                CAN_comData->RT_data.uintData[7-i]=CAN_comData->frame.data[i+4];
+                CAN_comData->RT_data.uintData[3-i]=CAN_comData->frame.data[i];
+            }
+
+            emit CurrentSignal(CAN_comData->RT_data.floats.fl1, CAN_comData->RT_data.floats.fl2);
+        }
         else if(CAN_comData->frame.can_id == toCanId(Device_ID::CAN_RPi, RPiCommand::R_CleanPlot)){
 
             emit CleanPlotSignal();

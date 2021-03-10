@@ -13,31 +13,39 @@ MainWindow::MainWindow(QWidget *parent)
     angleCurve = new QwtPlotCurve("S(t)");
     velocityCurve = new QwtPlotCurve("U(t)");
     accelerationCurve = new QwtPlotCurve("A(t)");
+    currentCurve = new QwtPlotCurve("I(t");
 
 
     QwtPlotGrid *angleGrid = new QwtPlotGrid();
     QwtPlotGrid *velocityGrid = new QwtPlotGrid();
     QwtPlotGrid *accelerationGrid= new QwtPlotGrid();
+    QwtPlotGrid *currentGrid= new QwtPlotGrid();
     angleGrid->setMajorPen(QPen(Qt::gray, 1));
     angleGrid->attach(ui->anglePlot);
     velocityGrid->setMajorPen(QPen(Qt::gray, 1));
     velocityGrid->attach(ui->velocityPlot);
     accelerationGrid->setMajorPen(QPen(Qt::gray, 1));
     accelerationGrid->attach(ui->accelerationPlot);
+    currentGrid->setMajorPen(QPen(Qt::gray, 1));
+    currentGrid->attach(ui->currentPlot);
 
     QwtPlotMagnifier *anglePlotMagnifier = new QwtPlotMagnifier(ui->anglePlot->canvas());
     QwtPlotMagnifier *velocityPlotMagnifier = new QwtPlotMagnifier(ui->velocityPlot->canvas());
     QwtPlotMagnifier *accelerationPlotMagnifier = new QwtPlotMagnifier(ui->accelerationPlot->canvas());
+    QwtPlotMagnifier *currentPlotMagnifier = new QwtPlotMagnifier(ui->currentPlot->canvas());
     anglePlotMagnifier->setMouseButton(Qt::MidButton);
     velocityPlotMagnifier->setMouseButton(Qt::MidButton);
     accelerationPlotMagnifier->setMouseButton(Qt::MidButton);
+    currentPlotMagnifier->setMouseButton(Qt::MidButton);
 
     QwtPlotPanner *anglePlotPanner = new QwtPlotPanner(ui->anglePlot->canvas());
     QwtPlotPanner *velocityPlotPanner = new QwtPlotPanner(ui->velocityPlot->canvas());
     QwtPlotPanner *accelerationPlotPanner = new QwtPlotPanner(ui->accelerationPlot->canvas());
+    QwtPlotPanner *currentPlotPanner = new QwtPlotPanner(ui->currentPlot->canvas());
     anglePlotPanner->setMouseButton(Qt::RightButton);
     velocityPlotPanner->setMouseButton(Qt::RightButton);
     accelerationPlotPanner->setMouseButton(Qt::RightButton);
+    currentPlotPanner->setMouseButton(Qt::RightButton);
 
     QwtPlotPicker *anglePlotPicker = new QwtPlotPicker(QwtPlot::xBottom, QwtPlot::yLeft,
                                                        QwtPlotPicker::CrossRubberBand,
@@ -51,6 +59,10 @@ MainWindow::MainWindow(QWidget *parent)
                                                        QwtPlotPicker::CrossRubberBand,
                                                        QwtPicker::ActiveOnly,
                                                        ui->accelerationPlot->canvas());
+    QwtPlotPicker *currentPlotPicker = new QwtPlotPicker(QwtPlot::xBottom, QwtPlot::yLeft,
+                                                       QwtPlotPicker::CrossRubberBand,
+                                                       QwtPicker::ActiveOnly,
+                                                       ui->currentPlot->canvas());
     anglePlotPicker->setRubberBandPen(QColor(Qt::red));
     anglePlotPicker->setTrackerPen(QColor(Qt::black));
     anglePlotPicker->setStateMachine(new QwtPickerDragPointMachine());
@@ -60,7 +72,9 @@ MainWindow::MainWindow(QWidget *parent)
     accelerationPlotPicker->setRubberBandPen(QColor(Qt::red));
     accelerationPlotPicker->setTrackerPen(QColor(Qt::black));
     accelerationPlotPicker->setStateMachine(new QwtPickerDragPointMachine());
-
+    currentPlotPicker->setRubberBandPen(QColor(Qt::red));
+    currentPlotPicker->setTrackerPen(QColor(Qt::black));
+    currentPlotPicker->setStateMachine(new QwtPickerDragPointMachine());
 
 
     angleCurve->setPen(QPen(Qt::blue));
@@ -69,6 +83,12 @@ MainWindow::MainWindow(QWidget *parent)
     velocityCurve->setPen(QPen(Qt::red));
     velocityCurve->setStyle(QwtPlotCurve::Lines);
     velocityCurve->attach(ui->velocityPlot);
+    accelerationCurve->setPen(QPen(Qt::yellow));
+    accelerationCurve->setStyle(QwtPlotCurve::Lines);
+    accelerationCurve->attach(ui->accelerationPlot);
+    currentCurve->setPen(QPen(Qt::yellow));
+    currentCurve->setStyle(QwtPlotCurve::Lines);
+    currentCurve->attach(ui->accelerationPlot);
 
     ui->anglePlot->setAxisTitle(QwtPlot::Axis::xBottom, "Время");
     ui->anglePlot->setAxisTitle(QwtPlot::Axis::yLeft, "Положение");
@@ -76,10 +96,13 @@ MainWindow::MainWindow(QWidget *parent)
     ui->velocityPlot->setAxisTitle(QwtPlot::Axis::yLeft, "Скорость");
     ui->accelerationPlot->setAxisTitle(QwtPlot::Axis::xBottom, "Время");
     ui->accelerationPlot->setAxisTitle(QwtPlot::Axis::yLeft, "Ускорение");
+    ui->currentPlot->setAxisTitle(QwtPlot::Axis::xBottom, "Время");
+    ui->currentPlot->setAxisTitle(QwtPlot::Axis::yLeft, "Ток");
 
     ui->anglePlot->replot();
     ui->velocityPlot->replot();
     ui->accelerationPlot->replot();
+    ui->currentPlot->replot();
 
     plotTimer = new QTimer(this);
     connect(plotTimer, SIGNAL(timeout()), this, SLOT(rePaint()));
@@ -112,6 +135,8 @@ MainWindow::MainWindow(QWidget *parent)
                             this, SLOT(angleReceived(double, double)));
     connect(CAN_handler->Receiver, SIGNAL(VelocitySignal(double, double)),
                             this, SLOT(velocityReceived(double, double)));
+    connect(CAN_handler->Receiver, SIGNAL(CurrentSignal(double, double)),
+                            this, SLOT(currentReceived(double, double)));
 
     connect(CAN_handler->Receiver, SIGNAL(CleanPlotSignal()),
                             this, SLOT(on_clearPlotButton_released()));
@@ -150,14 +175,18 @@ void MainWindow::rePaint()
         velocityPlotPoints.removeFirst();
     if(accelerationPlotPoints.count() >= 250)
         accelerationPlotPoints.removeFirst();
+    if(currentPlotPoints.count() >= 250)
+        currentPlotPoints.removeFirst();
     }
     angleCurve->setSamples(anglePlotPoints);
     velocityCurve->setSamples(velocityPlotPoints);
     accelerationCurve->setSamples(accelerationPlotPoints);
+    currentCurve->setSamples(currentPlotPoints);
 
     ui->anglePlot->replot();
     ui->velocityPlot->replot();
     ui->accelerationPlot->replot();
+    ui->currentPlot->replot();
 
 }
 
@@ -179,8 +208,14 @@ void MainWindow::velocityReceived(double velocity, double timeStamp)
 
     qDebug() << "velocity " << velocity << timeStamp;
     velocityPlotPoints.append(QPointF(timeStamp, velocity));
-
     ui->velocityLabel->setText("Текущая угловая скорость: " + QString::number(velocity, 'f', 3));
+}
+void MainWindow::currentReceived(double current, double timeStamp)
+{
+    qDebug() << "current" << current << timeStamp;
+    currentPlotPoints.append(QPointF(timeStamp, current));
+
+    ui->currentLabel->setText("Текущий ток: " + QString::number(current, 'f', 3));
 }
 
 /************Кнопки очистки графиков и смены состояния**************/
@@ -188,6 +223,8 @@ void MainWindow::on_clearPlotButton_released()
 {
     anglePlotPoints.clear();
     velocityPlotPoints.clear();
+    accelerationPlotPoints.clear();
+    currentPlotPoints.clear();
     rePaint();
 }
 void MainWindow::on_clearPlotButton_2_released()

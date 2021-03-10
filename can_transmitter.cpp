@@ -99,7 +99,7 @@ void CAN_Transmitter::transmitStartBreak(DriverState state, Device_ID device)
 void CAN_Transmitter::transmitClearPlot()
 {
     for(int i = 0; i<6; ++i)
-        dataTransmit(toCanId(Device_ID(Device_ID::CAN_STM1 + i*0x80), RPiCommand::T_CleanPlot), 0);
+        dataTransmit(toCanId(Device_ID::CAN_All, RPiCommand::T_CleanPlot), 0);
 }
 
 void CAN_Transmitter::transmitRatio(float ratio, Device_ID device, ControllerData ratioType)

@@ -60,6 +60,7 @@ enum ControllerData{
         T_Speed,
         R_Position,
         R_Speed,
+        R_Current,
 
         T_PositionProportionalRatio,
         T_PositionDifferentialRatio,
