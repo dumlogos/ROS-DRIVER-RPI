@@ -255,6 +255,11 @@ void MainWindow::on_startStopButton_released()
     else
         ui->startStopButton->setStyleSheet("QPushButton {background-color: orange;}");
 }
+void MainWindow::on_stopDriverBtn_released()
+{
+    emit allowTransmitCommand(Device_ID::CAN_STM1, ControllerCommand::DriverStop);
+}
+
 
 /************Кнопки отправки коэффициентов регулирования**************/
 void MainWindow::on_anglePButton_released()
@@ -264,7 +269,7 @@ void MainWindow::on_anglePButton_released()
                 ui->anglePButton->setStyleSheet("QPushButton {background-color: red;}");
                 emit allowTransmitRatio(toPointDouble(ui->anglePLE->text()),
                                         Device_ID::CAN_STM1, ControllerData::T_PositionProportionalRatio);
-                ui->anglePButton->setStyleSheet("QPushButton {background-color: rgb(85, 255, 0);}");
+                ui->anglePButton->setStyleSheet("QPushButton {background-color: rgb(255, 255, 255);}");
 
         }
     }
@@ -354,5 +359,6 @@ double toPointDouble(QString commaDouble)
 {
     return commaDouble.replace(",", ".").toDouble();
 }
+
 
 

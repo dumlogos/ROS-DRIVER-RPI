@@ -64,14 +64,17 @@ public:
 
 private slots:
     void rePaint();
-    void on_startStopButton_released();
-    void on_dirButton_released();
 
     void angleReceived(double angle, double timeStamp);
     void velocityReceived(double velocity, double timeStamp);
     void currentReceived(double current, double timeStamp);
 
+    void on_startStopButton_released();
+    void on_dirButton_released();
+    void on_stopDriverBtn_released();
+
     void on_clearPlotButton_released();
+    void on_clearPlotButton_2_released();
 
     void on_anglePButton_released();
     void on_angleIButton_released();
@@ -80,9 +83,8 @@ private slots:
     void on_velocityIButton_released();
     void on_velocityDButton_released();
 
-    void on_clearPlotButton_2_released();
-
     void on_updateIfaceBtn_released();
+
 
 signals:
     void allowTransmitCommand(Device_ID device, ControllerCommand cntrCmnd, uint8_t *data = nullptr);

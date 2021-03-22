@@ -38,547 +38,34 @@
 	background-color: rgb(255, 255, 255);
 }</string>
    </property>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>1170</x>
-      <y>20</y>
-      <width>311</width>
-      <height>456</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="verticalLayout_2">
-     <item>
-      <layout class="QVBoxLayout" name="uiEnterLayout">
-       <item>
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string>Введите угол поворота</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="angleLineEdit"/>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_2">
-         <property name="text">
-          <string>Введите угловую скорость</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="velocityLineEdit"/>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="buttonsLayout">
-         <item>
-          <widget class="QPushButton" name="startStopButton">
-           <property name="styleSheet">
-            <string notr="true">QPushButton {
-	background-color: qlineargradient(spread:pad, x1:0.503686, y1:0.619318, x2:0.499, y2:0, stop:0.779412 rgba(28, 216, 0, 243), stop:1 rgba(255, 255, 255, 255));
-	border-style: ridge;
-    border-width: 2px;
-    border-radius: 5px; 
-	
-	border-color: rgb(0, 85, 0);
-    font: 12px;
-}
-</string>
-           </property>
-           <property name="text">
-            <string>Отправить желаемое
- положение</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="dirButton">
-           <property name="styleSheet">
-            <string notr="true">QPushButton {
-	background-color: rgb(194, 204, 126);
-	border-style: ridge;
-    border-width: 2px;
-    border-radius: 5px; 
-	border-color: rgb(0, 0, 0);
-    font: 12px;
-}</string>
-           </property>
-           <property name="text">
-            <string>К предыдущей
- точке</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <widget class="QLabel" name="angleLabel">
-         <property name="text">
-          <string>Текущий угол поворота:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="velocityLabel">
-         <property name="text">
-          <string>Текущая угловая скорость:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="accelerationLabel">
-         <property name="text">
-          <string>Текущее угловое ускорение:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="currentLabel">
-         <property name="text">
-          <string>Текущий ток:</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <layout class="QVBoxLayout" name="verticalLayout">
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
-         <item>
-          <layout class="QGridLayout" name="gridLayout_2">
-           <item row="0" column="0">
-            <widget class="QLabel" name="label_3">
-             <property name="text">
-              <string>Положение - П</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QLineEdit" name="anglePLE">
-             <property name="minimumSize">
-              <size>
-               <width>100</width>
-               <height>0</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QPushButton" name="anglePButton">
-             <property name="minimumSize">
-              <size>
-               <width>25</width>
-               <height>25</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>30</width>
-               <height>30</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QPushButton {
-	background-color: qlineargradient(spread:pad, x1:0.503686, y1:0.619318, x2:0.499, y2:0, stop:0.779412 rgba(28, 216, 0, 243), stop:1 rgba(255, 255, 255, 255));
-	border-style: outset;
-    border-width: 2px;
-    border-radius: 5px; 
-	
-	border-color: rgb(0, 85, 0);
-    font: bold 14px;
-}</string>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="default">
-              <bool>false</bool>
-             </property>
-             <property name="flat">
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="label_4">
-             <property name="text">
-              <string>Положение - И</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="0">
-            <widget class="QLineEdit" name="angleILE">
-             <property name="minimumSize">
-              <size>
-               <width>100</width>
-               <height>0</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="1">
-            <widget class="QPushButton" name="angleIButton">
-             <property name="minimumSize">
-              <size>
-               <width>25</width>
-               <height>25</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>30</width>
-               <height>30</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QPushButton {
-	background-color: qlineargradient(spread:pad, x1:0.503686, y1:0.619318, x2:0.499, y2:0, stop:0.779412 rgba(28, 216, 0, 243), stop:1 rgba(255, 255, 255, 255));
-	border-style: outset;
-    border-width: 2px;
-    border-radius: 5px; 
-	
-	border-color: rgb(0, 85, 0);
-    font: bold 14px;
-}</string>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="0">
-            <widget class="QLabel" name="label_5">
-             <property name="text">
-              <string>Положение - Д</string>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="0">
-            <widget class="QLineEdit" name="angleDLE">
-             <property name="minimumSize">
-              <size>
-               <width>100</width>
-               <height>0</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="1">
-            <widget class="QPushButton" name="angleDButton">
-             <property name="minimumSize">
-              <size>
-               <width>25</width>
-               <height>25</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>30</width>
-               <height>30</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QPushButton {
-	background-color: qlineargradient(spread:pad, x1:0.503686, y1:0.619318, x2:0.499, y2:0, stop:0.779412 rgba(28, 216, 0, 243), stop:1 rgba(255, 255, 255, 255));
-	border-style: outset;
-    border-width: 2px;
-    border-radius: 5px; 
-	
-	border-color: rgb(0, 85, 0);
-    font: bold 14px;
-}</string>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <layout class="QGridLayout" name="gridLayout">
-           <item row="0" column="0">
-            <widget class="QLabel" name="label_6">
-             <property name="text">
-              <string>Скорость - П</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QLineEdit" name="velocityPLE">
-             <property name="minimumSize">
-              <size>
-               <width>100</width>
-               <height>0</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QPushButton" name="velocityPButton">
-             <property name="minimumSize">
-              <size>
-               <width>25</width>
-               <height>25</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>30</width>
-               <height>30</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QPushButton {
-	background-color: qlineargradient(spread:pad, x1:0.503686, y1:0.619318, x2:0.499, y2:0, stop:0.779412 rgba(28, 216, 0, 243), stop:1 rgba(255, 255, 255, 255));
-	border-style: outset;
-    border-width: 2px;
-    border-radius: 5px; 
-	
-	border-color: rgb(0, 85, 0);
-    font: bold 14px;
-}</string>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="label_7">
-             <property name="text">
-              <string>Скорость - И</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="0">
-            <widget class="QLineEdit" name="velocityILE">
-             <property name="minimumSize">
-              <size>
-               <width>100</width>
-               <height>0</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="1">
-            <widget class="QPushButton" name="velocityIButton">
-             <property name="minimumSize">
-              <size>
-               <width>25</width>
-               <height>25</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>30</width>
-               <height>30</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QPushButton {
-	background-color: qlineargradient(spread:pad, x1:0.503686, y1:0.619318, x2:0.499, y2:0, stop:0.779412 rgba(28, 216, 0, 243), stop:1 rgba(255, 255, 255, 255));
-	border-style: outset;
-    border-width: 2px;
-    border-radius: 5px; 
-	
-	border-color: rgb(0, 85, 0);
-    font: bold 14px;
-}</string>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="0">
-            <widget class="QLabel" name="label_8">
-             <property name="text">
-              <string>Скорость - Д</string>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="0">
-            <widget class="QLineEdit" name="velocityDLE">
-             <property name="minimumSize">
-              <size>
-               <width>100</width>
-               <height>0</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="1">
-            <widget class="QPushButton" name="velocityDButton">
-             <property name="minimumSize">
-              <size>
-               <width>25</width>
-               <height>25</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>30</width>
-               <height>30</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QPushButton {
-	background-color: qlineargradient(spread:pad, x1:0.503686, y1:0.619318, x2:0.499, y2:0, stop:0.779412 rgba(28, 216, 0, 243), stop:1 rgba(255, 255, 255, 255));
-	border-style: outset;
-    border-width: 2px;
-    border-radius: 5px; 
-	
-	border-color: rgb(0, 85, 0);
-    font: bold 14px;
-}</string>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_3">
-         <item>
-          <widget class="QPushButton" name="clearPlotButton">
-           <property name="styleSheet">
-            <string notr="true">QPushButton {
-	background-color: qlineargradient(spread:pad, x1:0.494, y1:0.324, x2:0.495, y2:0, stop:0.357843 rgba(17, 172, 255, 239), stop:1 rgba(255, 255, 255, 255));
-	border-style: outset;
-    border-width: 2px;
-    border-radius: 5px; 
-	
-	
-	border-color: rgb(0, 85, 127);
-    font: 12px;
-}</string>
-           </property>
-           <property name="text">
-            <string>Очистить
- график</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="clearPlotButton_2">
-           <property name="styleSheet">
-            <string notr="true">QPushButton {
-	background-color: qlineargradient(spread:pad, x1:0.494, y1:0.324, x2:0.495, y2:0, stop:0.357843 rgba(17, 172, 255, 239), stop:1 rgba(255, 255, 255, 255));
-	border-style: outset;
-    border-width: 2px;
-    border-radius: 5px; 
-	
-	
-	border-color: rgb(0, 85, 127);
-    font: 12px;
-}</string>
-           </property>
-           <property name="text">
-            <string>Обнулить
- положение</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-      </layout>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QGroupBox" name="canIfaceGroupBox">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>650</y>
-      <width>451</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="title">
-     <string/>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-    </property>
-    <property name="checkable">
-     <bool>false</bool>
-    </property>
-    <widget class="QRadioButton" name="canRadioBtn">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>10</y>
-       <width>50</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>CAN</string>
-     </property>
-     <property name="checked">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="updateIfaceBtn">
-     <property name="geometry">
-      <rect>
-       <x>280</x>
-       <y>10</y>
-       <width>161</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton {
-	background-color: qlineargradient(spread:pad, x1:0.498, y1:0.54, x2:0.499, y2:0, stop:0.779412 rgba(255, 160, 7, 255), stop:1 rgba(255, 255, 255, 255));
-	border-style: outset;
-    border-width: 2px;
-    border-radius: 5px; 
-	
-	border-color: rgb(165, 55, 0);
-    font: 12px;
-}</string>
-     </property>
-     <property name="text">
-      <string>Обновить интерфейс</string>
-     </property>
-    </widget>
-    <widget class="QRadioButton" name="vcanRadioBtn">
-     <property name="geometry">
-      <rect>
-       <x>70</x>
-       <y>10</y>
-       <width>191</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>VCAN (Виртуальный CAN)</string>
-     </property>
-     <property name="checked">
-      <bool>false</bool>
-     </property>
-    </widget>
-   </widget>
-   <widget class="QWidget" name="gridLayoutWidget">
+   <widget class="QGroupBox" name="gridGroupBox">
     <property name="geometry">
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>1151</width>
-      <height>641</height>
+      <width>1031</width>
+      <height>681</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="plotLayout">
      <item row="0" column="1">
       <widget class="QwtPlot" name="accelerationPlot">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>300</height>
+        </size>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Sunken</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QwtPlot" name="velocityPlot">
        <property name="maximumSize">
         <size>
          <width>16777215</width>
@@ -612,22 +99,6 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="0">
-      <widget class="QwtPlot" name="velocityPlot">
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>300</height>
-        </size>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::StyledPanel</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Sunken</enum>
-       </property>
-      </widget>
-     </item>
      <item row="1" column="1">
       <widget class="QwtPlot" name="currentPlot">
        <property name="maximumSize">
@@ -643,6 +114,730 @@
         <enum>QFrame::Sunken</enum>
        </property>
       </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="layoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>1050</x>
+      <y>10</y>
+      <width>431</width>
+      <height>620</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QGroupBox" name="groupBox">
+       <layout class="QVBoxLayout" name="uiEnterLayout">
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QLineEdit{
+width: 20px;
+}</string>
+          </property>
+          <property name="text">
+           <string>Введите угол поворота</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="angleLineEdit"/>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_2">
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QLineEdit{
+width: 20px;
+}</string>
+          </property>
+          <property name="text">
+           <string>Введите угловую скорость</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="velocityLineEdit"/>
+        </item>
+        <item>
+         <widget class="QLabel" name="angleLabel">
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QLineEdit{
+width: 20px;
+}</string>
+          </property>
+          <property name="text">
+           <string>Текущий угол поворота:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="velocityLabel">
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QLineEdit{
+width: 20px;
+}</string>
+          </property>
+          <property name="text">
+           <string>Текущая угловая скорость:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="accelerationLabel">
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QLineEdit{
+width: 20px;
+}</string>
+          </property>
+          <property name="text">
+           <string>Текущее угловое ускорение:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="currentLabel">
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QLineEdit{
+width: 20px;
+}</string>
+          </property>
+          <property name="text">
+           <string>Текущий ток:</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QPushButton" name="startStopButton">
+         <property name="font">
+          <font>
+           <family>Sans Serif</family>
+           <pointsize>10</pointsize>
+           <underline>false</underline>
+           <strikeout>false</strikeout>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
+    border: none;
+    border-radius: 3px;
+    text-decoration: none;
+    color: white;
+    background: #0B63F6;
+	width: 200px;
+	height: 40px;
+}
+
+QPushButton:hover {
+    background: #003CC5;
+    position: relative;
+    top: 5px;
+}</string>
+         </property>
+         <property name="text">
+          <string>Отправить желаемое
+ положение</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="dirButton">
+         <property name="font">
+          <font>
+           <family>Sans Serif</family>
+           <pointsize>10</pointsize>
+           <underline>false</underline>
+           <strikeout>false</strikeout>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
+    border: none;
+    border-radius: 3px;
+    text-decoration: none;
+    color: white;
+    background: #0B63F6;
+	width: 200px;
+	height: 40px;
+}
+
+QPushButton:hover {
+    background: #003CC5;
+    position: relative;
+    top: 5px;
+}</string>
+         </property>
+         <property name="text">
+          <string>К предыдущей
+ точке</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="groupBox">
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <item>
+           <widget class="QLabel" name="label_3">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>Положение - П</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_4">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>Положение - И</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_5">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>Положение - Д</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_6">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>Скорость - П</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_7">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>Скорость - И</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_8">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>Скорость - Д</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_4">
+          <item>
+           <widget class="QLineEdit" name="anglePLE">
+            <property name="minimumSize">
+             <size>
+              <width>100</width>
+              <height>0</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="angleILE">
+            <property name="minimumSize">
+             <size>
+              <width>100</width>
+              <height>0</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="angleDLE">
+            <property name="minimumSize">
+             <size>
+              <width>100</width>
+              <height>0</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="velocityPLE">
+            <property name="minimumSize">
+             <size>
+              <width>100</width>
+              <height>0</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="velocityILE">
+            <property name="minimumSize">
+             <size>
+              <width>100</width>
+              <height>0</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="velocityDLE">
+            <property name="minimumSize">
+             <size>
+              <width>100</width>
+              <height>0</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_3">
+          <item>
+           <widget class="QPushButton" name="anglePButton">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton {
+    border: none;
+    border-radius: 3px;
+    text-decoration: none;
+    color: white;
+    background: rgb(0, 170, 0); 
+}
+QPushButton:hover {
+    background: rgb(0, 130, 0);
+    position: relative;
+    top: 5px;
+}</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="default">
+             <bool>false</bool>
+            </property>
+            <property name="flat">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="angleIButton">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton {
+    border: none;
+    border-radius: 3px;
+    text-decoration: none;
+    color: white;
+    background: rgb(0, 170, 0); 
+}
+QPushButton:hover {
+    background: rgb(0, 130, 0);
+    position: relative;
+    top: 5px;
+}</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="angleDButton">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton {
+    border: none;
+    border-radius: 3px;
+    text-decoration: none;
+    color: white;
+    background: rgb(0, 170, 0); 
+}
+QPushButton:hover {
+    background: rgb(0, 130, 0);
+    position: relative;
+    top: 5px;
+}</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="velocityPButton">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton {
+    border: none;
+    border-radius: 3px;
+    text-decoration: none;
+    color: white;
+    background: rgb(0, 170, 0); 
+}
+QPushButton:hover {
+    background: rgb(0, 130, 0);
+    position: relative;
+    top: 5px;
+}</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="velocityIButton">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton {
+    border: none;
+    border-radius: 3px;
+    text-decoration: none;
+    color: white;
+    background: rgb(0, 170, 0); 
+}
+QPushButton:hover {
+    background: rgb(0, 130, 0);
+    position: relative;
+    top: 5px;
+}</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="velocityDButton">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton {
+    border: none;
+    border-radius: 3px;
+    text-decoration: none;
+    color: white;
+    background: rgb(0, 170, 0); 
+}
+QPushButton:hover {
+    background: rgb(0, 130, 0);
+    position: relative;
+    top: 5px;
+}</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="0" column="1">
+        <widget class="QPushButton" name="clearPlotButton">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+           <underline>false</underline>
+           <strikeout>false</strikeout>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
+    border: none;
+    border-radius: 3px;
+    text-decoration: none;
+    color: white;
+    background: rgb(23, 190, 165); 
+	height: 40px;
+}
+QPushButton:hover {
+    background: rgb(23, 160, 165); 
+    position: relative;
+    top: 5px;
+}</string>
+         </property>
+         <property name="text">
+          <string>Очистить
+ график</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QPushButton" name="clearPlotButton_2">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+           <underline>false</underline>
+           <strikeout>false</strikeout>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
+    border: none;
+    border-radius: 3px;
+    text-decoration: none;
+    color: white;
+    background: rgb(23, 190, 165); 
+	height: 40px;
+}
+QPushButton:hover {
+    background: rgb(23, 160, 165); 
+    position: relative;
+    top: 5px;
+}</string>
+         </property>
+         <property name="text">
+          <string>Обнулить
+ положение</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QPushButton" name="stopDriverBtn">
+         <property name="font">
+          <font>
+           <family>Sans Serif</family>
+           <pointsize>10</pointsize>
+           <underline>false</underline>
+           <strikeout>false</strikeout>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
+    border: none;
+    border-radius: 3px;
+    text-decoration: none;
+    color: white;
+    background: rgb(23, 190, 165); 
+	height: 40px;
+}
+QPushButton:hover {
+    background: rgb(23, 160, 165); 
+    position: relative;
+    top: 5px;
+}</string>
+         </property>
+         <property name="text">
+          <string>Включить 
+тормоз</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0" colspan="2">
+        <widget class="QGroupBox" name="groupBox">
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <item>
+           <widget class="QRadioButton" name="canRadioBtn">
+            <property name="minimumSize">
+             <size>
+              <width>60</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>60</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>CAN</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="vcanRadioBtn">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>VCAN (Виртуальный CAN)</string>
+            </property>
+            <property name="checked">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="1" column="2">
+        <widget class="QPushButton" name="updateIfaceBtn">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+           <underline>false</underline>
+           <strikeout>false</strikeout>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
+    border: none;
+    border-radius: 3px;
+    text-decoration: none;
+    color: white;
+	height: 40px;
+	background-color: rgb(255, 119, 21);
+}
+QPushButton:hover {
+   
+	background-color: rgb(207, 69, 0);
+    position: relative;
+    top: 5px;
+}</string>
+         </property>
+         <property name="text">
+          <string>Обновить 
+интерфейс</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </widget>
