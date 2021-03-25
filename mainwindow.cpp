@@ -106,6 +106,11 @@ MainWindow::MainWindow(QWidget *parent)
     connect(plotTimer, SIGNAL(timeout()), this, SLOT(rePaint()));
     plotTimer->start(5);
 
+    QTimer* ratioTimer = new QTimer(this);
+    connect(ratioTimer, SIGNAL(timeout()), this, SIGNAL(RatioQuery()));
+    connect(ratioTimer, SIGNAL(timeout()), ratioTimer, SIGNAL(stop()));
+    ratioTimer->start(20);
+
     angleParameterValidator = new QDoubleValidator(-11520, 11520, 2, this);
     velocityParameterValidator = new QDoubleValidator(0, 50, 2, this);
     PIDratioParameterValidator = new QDoubleValidator(0, 10, 8, this);
@@ -160,7 +165,6 @@ MainWindow::MainWindow(QWidget *parent)
     for(int i = 0; i < 6; ++i)
         driverControllers.append(new DriverController());
 
-    emit RatioQuery();
 
 }
 
@@ -268,22 +272,22 @@ void MainWindow::on_dirButton_released()
 }
 void MainWindow::on_startStopButton_released()
 {
-    if(ui->angleLineEdit->hasAcceptableInput() /*&& ui->velocityLineEdit->hasAcceptableInput()*/){
-        if(ui->startStopButton->styleSheet() != "QPushButton {background-color: red; }" ||
-           ui->startStopButton->styleSheet() == "QPushButton {background-color: orange;  }"){
-                ui->startStopButton->setStyleSheet("QPushButton {background-color: red; }");
+    if(ui->angleLineEdit->hasAcceptableInput()){
+        if(ui->startStopButton->styleSheet() != "QPushButton {background: red; }" ||
+           ui->startStopButton->styleSheet() == "QPushButton {background: orange;  }"){
+                ui->startStopButton->setStyleSheet("QPushButton {background: red; }");
                 emit allowTransmitAngle(toPointDouble(ui->angleLineEdit->text()), Device_ID::CAN_STM1);
                 emit allowTransmitCommand(Device_ID::CAN_STM1, ControllerCommand::MotorMoved);
-                ui->startStopButton->setStyleSheet("QPushButton {background-color: rgb(85, 255, 0);}");
+                ui->startStopButton->setStyleSheet("QPushButton {background: rgb(85, 255, 0);}");
 
         }
         else{
-                ui->startStopButton->setStyleSheet("QPushButton {background-color: rgb(85, 255, 0);}");
+                ui->startStopButton->setStyleSheet("QPushButton {background: rgb(85, 255, 0);}");
                 emit allowTransmitCommand(Device_ID::CAN_STM1, ControllerCommand::MotorStopped);
         }
     }
     else
-        ui->startStopButton->setStyleSheet("QPushButton {background-color: orange;}");
+        ui->startStopButton->setStyleSheet("QPushButton {background: orange;}");
 }
 void MainWindow::on_stopDriverBtn_released()
 {

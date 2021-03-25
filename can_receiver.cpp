@@ -59,14 +59,10 @@ bool CAN_Receiver::dataReceive()
             }
             //emit StartBreakReceived();
         }
-        else if((CAN_comData->frame.can_id == toCanId(Device_ID::CAN_STM1, ControllerData::R_PositionProportionalRatio)) ||
-                (CAN_comData->frame.can_id == toCanId(Device_ID::CAN_STM1, ControllerData::R_PositionDifferentialRatio)) ||
-                (CAN_comData->frame.can_id == toCanId(Device_ID::CAN_STM1, ControllerData::R_PositionIntegralRatio)) ||
-                (CAN_comData->frame.can_id == toCanId(Device_ID::CAN_STM1, ControllerData::R_SpeedProportionalRatio)) ||
-                (CAN_comData->frame.can_id == toCanId(Device_ID::CAN_STM1, ControllerData::R_SpeedDifferentialRatio)) ||
-                (CAN_comData->frame.can_id == toCanId(Device_ID::CAN_STM1, ControllerData::R_SpeedIntegralRatio))){
+        else if((CAN_comData->frame.can_id >= toCanId(Device_ID::CAN_STM1, ControllerData::R_PositionProportionalRatio)) &&
+                 CAN_comData->frame.can_id <= toCanId(Device_ID::CAN_STM1, ControllerData::R_SpeedIntegralRatio)){
 
-            for(int i = 0; i < 8; ++i){
+            for(int i = 0; i < 4; ++i){
                CAN_comData->RT_data.uintData[i] = CAN_comData->frame.data[i];
             }
             emit RatioSignal(CAN_comData->RT_data.floats.fl1, CAN_comData->frame.can_id);
