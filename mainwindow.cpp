@@ -172,13 +172,13 @@ MainWindow::~MainWindow()
 void MainWindow::rePaint()
 {
     if(!anglePlotPoints.isEmpty() && !velocityPlotPoints.isEmpty()){
-    if(anglePlotPoints.count() >= 250)
+    while(anglePlotPoints.count() >= 250)
         anglePlotPoints.removeFirst();
-    if(velocityPlotPoints.count() >= 250)
+    while(velocityPlotPoints.count() >= 250)
         velocityPlotPoints.removeFirst();
-    if(accelerationPlotPoints.count() >= 250)
+    while(accelerationPlotPoints.count() >= 250)
         accelerationPlotPoints.removeFirst();
-    if(currentPlotPoints.count() >= 250)
+    while(currentPlotPoints.count() >= 250)
         currentPlotPoints.removeFirst();
     }
     angleCurve->setSamples(anglePlotPoints);
