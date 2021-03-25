@@ -63,6 +63,8 @@ bool CAN_Handler::CANHandlerSetup()
         CAN_comData.RT_data.uintData[i]=0;
     }
 
+    emit RatioQuery();
+
     return true;
 }
 bool CAN_Handler::CANHandlerSetDown()

@@ -67,6 +67,7 @@ public slots:
 
 signals:
    void ReceiveAllCAN();
+   void RatioQuery();
 
 };
 

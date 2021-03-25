@@ -138,6 +138,8 @@ MainWindow::MainWindow(QWidget *parent)
                             this, SLOT(currentReceived(double, double)));
     connect(CAN_handler->Receiver, SIGNAL(RatioSignal(float, uint32_t)),
                             this, SLOT(ratioReceived(float, uint32_t)));
+    connect(CAN_handler, SIGNAL(RatioQuery()),
+            CAN_handler->Transmitter, SLOT(transmitClearPlot()));
 
     connect(CAN_handler->Receiver, SIGNAL(CleanPlotSignal()),
                             this, SLOT(on_clearPlotButton_released()));
