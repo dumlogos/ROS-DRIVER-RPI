@@ -32,7 +32,7 @@ signals:
     void CurrentSignal(double current, double timeStamp);
     void CleanPlotSignal();
     void HeartbeatSignal();
-    void RatioSignal(double ratio, uint32_t id);
+    void RatioSignal(float ratio, uint32_t id);
 
 
 };
