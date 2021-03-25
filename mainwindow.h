@@ -71,7 +71,7 @@ private slots:
     void angleReceived(double angle, double timeStamp);
     void velocityReceived(double velocity, double timeStamp);
     void currentReceived(double current, double timeStamp);
-    void ratioReceived(double ratio, uint32_t id);
+    void ratioReceived(float ratio, uint32_t id);
 
     void on_startStopButton_released();
     void on_dirButton_released();
@@ -97,6 +97,8 @@ signals:
     void allowTransmitCommand(Device_ID device, RPiCommand rpiCmnd, uint8_t *data = nullptr);
     void allowTransmitRatio(float ratio, Device_ID device, ControllerData ratioType);
     void allowTransmitAngle(float angle, Device_ID device);
+    void RatioQuery();
+
 
 
 
