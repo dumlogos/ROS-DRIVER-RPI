@@ -13,7 +13,6 @@ CAN_Handler::CAN_Handler(QWidget *parent) :
 
     heartbeatTimer = new QTimer(this);
     connect(heartbeatTimer, SIGNAL(timeout()), this, SLOT(HeartbeatTransmit()));
-    emit RatioQuery();
     //Изменить!!!!!!!!!!!!!!!!!!!!!!
     heartbeatTimer->start(20);
     connect(Receiver, SIGNAL(HeartbeatSignal()), this, SLOT(HeartbeatReceived()));

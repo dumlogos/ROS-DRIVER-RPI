@@ -138,7 +138,7 @@ MainWindow::MainWindow(QWidget *parent)
                             this, SLOT(currentReceived(double, double)));
     connect(CAN_handler->Receiver, SIGNAL(RatioSignal(float, uint32_t)),
                             this, SLOT(ratioReceived(float, uint32_t)));
-    connect(CAN_handler, SIGNAL(RatioQuery()),
+    connect(this, SIGNAL(RatioQuery()),
             CAN_handler->Transmitter, SLOT(transmitClearPlot()));
 
     connect(CAN_handler->Receiver, SIGNAL(CleanPlotSignal()),
@@ -159,6 +159,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     for(int i = 0; i < 6; ++i)
         driverControllers.append(new DriverController());
+
+    emit RatioQuery();
 
 }
 
