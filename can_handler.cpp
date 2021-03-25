@@ -5,7 +5,7 @@ CAN_Handler::CAN_Handler(QWidget *parent) :
     iface("can0"),
     heartbeatRequests(7)
 {
-    CAN_Handler_Setup();
+    CANHandlerSetup();
     Transmitter = new CAN_Transmitter(this);
     Receiver = new CAN_Receiver(this);
     transmitterThread = new QThread(this);
@@ -25,17 +25,14 @@ CAN_Handler::~CAN_Handler(){
     delete receiverThread;
 }
 
-bool CAN_Handler::CAN_Handler_Setup()
+bool CAN_Handler::CANHandlerSetup()
 {
     memset(&(CAN_comData.frame), 0, sizeof(struct can_frame));
-
-    printf("this is a can send demo\r\n");
 
     //1.Create socket
     CAN_comData.s = socket(PF_CAN, SOCK_RAW, CAN_RAW);
     if (CAN_comData.s < 0) {
-        perror("socket PF_CAN failed");
-        return 1;
+        return false;
     }
 
     //2.Specify can0 device
@@ -43,7 +40,7 @@ bool CAN_Handler::CAN_Handler_Setup()
      CAN_comData.ret = ioctl(CAN_comData.s, SIOCGIFINDEX, &(CAN_comData.ifr));
     if (CAN_comData.ret < 0) {
         qDebug() << iface.toStdString().c_str() << "connection fault";
-        return 1;
+        return false;
     }
     else
         qDebug() << iface.toStdString().c_str() << "connected";
@@ -53,8 +50,7 @@ bool CAN_Handler::CAN_Handler_Setup()
     CAN_comData.addr.can_ifindex = CAN_comData.ifr.ifr_ifindex;
     CAN_comData.ret = bind(CAN_comData.s, (struct sockaddr *)&(CAN_comData.addr), sizeof(CAN_comData.addr));
     if (CAN_comData.ret < 0) {
-        perror("bind failed");
-        return 1;
+        return false;
     }
 
     //4.Disable filtering rules, do not receive packets, only send
@@ -67,18 +63,18 @@ bool CAN_Handler::CAN_Handler_Setup()
         CAN_comData.RT_data.uintData[i]=0;
     }
 
-    return 0;
+    return true;
 }
-bool CAN_Handler::CAN_Handler_SetDown()
+bool CAN_Handler::CANHandlerSetDown()
 {
     qDebug() << "shutdown" << iface;
     UNISTD_OVERRIDE::myCloseCan(CAN_comData.s);
     return 0;
 }
 
-bool CAN_Handler::CAN_Set_Interface(CAN_IFace iface)
+bool CAN_Handler::CANSetInterface(CAN_IFace iface)
 {
-    CAN_Handler_SetDown();
+    CANHandlerSetDown();
     switch(iface){
         case CAN_IFace::VCAN:
             this->iface = "vcan0";
@@ -89,7 +85,7 @@ bool CAN_Handler::CAN_Set_Interface(CAN_IFace iface)
         default:
             return false;
     }
-    return CAN_Handler_Setup();
+    return CANHandlerSetup();
 }
 
 void CAN_Handler::Handle()

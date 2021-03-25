@@ -52,8 +52,8 @@ public:
     explicit CAN_Handler(QWidget *parent = nullptr);
     ~CAN_Handler();
 
-    bool CAN_Handler_Setup();
-    bool CAN_Handler_SetDown();
+    bool CANHandlerSetup();
+    bool CANHandlerSetDown();
     QString getIface();
 
 
@@ -63,7 +63,7 @@ public:
 public slots:
     void HeartbeatTransmit();
     void HeartbeatReceived();
-    bool CAN_Set_Interface(CAN_IFace iface);
+    bool CANSetInterface(CAN_IFace iface);
 
 signals:
    void ReceiveAllCAN();

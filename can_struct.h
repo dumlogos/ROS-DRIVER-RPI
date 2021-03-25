@@ -15,10 +15,10 @@ struct CAN_Struct{
             float fl1;
             float fl2;
         } floats;
-        struct floatIntM{
-            float fl;
-            int in;
-        } floatInt;
+        struct intsM{
+            int int1;
+            int int2;
+        } ints;
     } CAN_RT_Data;
     CAN_RT_Data RT_data;
     int ret;

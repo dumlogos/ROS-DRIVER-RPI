@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include "can_handler.h"
+#include "drivercontroller.h"
 
 #include <qwt_plot.h>
 #include <qwt_plot_magnifier.h>
@@ -54,6 +55,8 @@ private:
     QVector<QPointF> accelerationPlotPoints;
     QVector<QPointF> currentPlotPoints;
 
+    QVector<DriverController* > driverControllers;
+
     QTimer *plotTimer;
 
 
@@ -68,10 +71,12 @@ private slots:
     void angleReceived(double angle, double timeStamp);
     void velocityReceived(double velocity, double timeStamp);
     void currentReceived(double current, double timeStamp);
+    void ratioReceived(double ratio, uint32_t id);
 
     void on_startStopButton_released();
     void on_dirButton_released();
     void on_stopDriverBtn_released();
+    void on_stopDriverBtn_2_released();
 
     void on_clearPlotButton_released();
     void on_clearPlotButton_2_released();
@@ -85,6 +90,7 @@ private slots:
 
     void on_updateIfaceBtn_released();
 
+    void updateRatioLabels();
 
 signals:
     void allowTransmitCommand(Device_ID device, ControllerCommand cntrCmnd, uint8_t *data = nullptr);

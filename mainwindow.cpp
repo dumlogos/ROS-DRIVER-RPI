@@ -127,6 +127,7 @@ MainWindow::MainWindow(QWidget *parent)
     qRegisterMetaType<DriverState>("RPiCommand");
     qRegisterMetaType<DriverState>("ControllerCommand");
     qRegisterMetaType<DriverState>("ControllerData");
+    qRegisterMetaType<DriverState>("uint32_t");
 
 
     connect(CAN_handler->Receiver, SIGNAL(AngleSignal(double, double)),
@@ -135,6 +136,8 @@ MainWindow::MainWindow(QWidget *parent)
                             this, SLOT(velocityReceived(double, double)));
     connect(CAN_handler->Receiver, SIGNAL(CurrentSignal(double, double)),
                             this, SLOT(currentReceived(double, double)));
+    connect(CAN_handler->Receiver, SIGNAL(RatioSignal(double, uint32_t)),
+                            this, SLOT(ratioReceived(double, uint32_t)));
 
     connect(CAN_handler->Receiver, SIGNAL(CleanPlotSignal()),
                             this, SLOT(on_clearPlotButton_released()));
@@ -151,13 +154,15 @@ MainWindow::MainWindow(QWidget *parent)
             CAN_handler->Transmitter, SLOT(transmitCommand(Device_ID, RPiCommand, uint8_t*)));
 
     CAN_handler->Handle();
+
+    for(int i = 0; i < 6; ++i)
+        driverControllers.append(new DriverController());
+
 }
-
-
 
 MainWindow::~MainWindow()
 {
-    CAN_handler->CAN_Handler_SetDown();
+    CAN_handler->CANHandlerSetDown();
     delete ui;
     delete CAN_handler;
     delete angleCurve;
@@ -196,6 +201,7 @@ void MainWindow::angleReceived(double angle, double timeStamp)
     anglePlotPoints.append(QPointF(timeStamp, angle));
 
     ui->angleLabel->setText("Текущий угол поворота: " + QString::number(angle, 'f', 3));
+    driverControllers[0]->curPosition = angle;
 }
 void MainWindow::velocityReceived(double velocity, double timeStamp)
 {
@@ -206,6 +212,7 @@ void MainWindow::velocityReceived(double velocity, double timeStamp)
 
     qDebug() << "velocity " << velocity << timeStamp;
     velocityPlotPoints.append(QPointF(timeStamp, velocity));
+    driverControllers[0]->curSpeed = velocity;
     ui->velocityLabel->setText("Текущая угловая скорость: " + QString::number(velocity, 'f', 3));
 }
 void MainWindow::currentReceived(double current, double timeStamp)
@@ -214,7 +221,26 @@ void MainWindow::currentReceived(double current, double timeStamp)
     currentPlotPoints.append(QPointF(timeStamp, current));
 
     ui->currentLabel->setText("Текущий ток: " + QString::number(current, 'f', 3));
+    driverControllers[0]->curCurrent = current;
 }
+
+void MainWindow::ratioReceived(double ratio, uint32_t id)
+{
+    if(id == toCanId(Device_ID::CAN_STM1, ControllerData::R_PositionProportionalRatio))
+        driverControllers[0]->positionProportionalRatio = ratio;
+    else if(id == toCanId(Device_ID::CAN_STM1, ControllerData::R_PositionIntegralRatio))
+        driverControllers[0]->positionIntegralRatio = ratio;
+    else if(id == toCanId(Device_ID::CAN_STM1, ControllerData::R_PositionDifferentialRatio))
+        driverControllers[0]->positionDifferentialRatio = ratio;
+    else if(id == toCanId(Device_ID::CAN_STM1, ControllerData::R_SpeedProportionalRatio))
+        driverControllers[0]->speedProportionalRatio = ratio;
+    else if(id == toCanId(Device_ID::CAN_STM1, ControllerData::R_SpeedIntegralRatio))
+        driverControllers[0]->speedIntegralRatio = ratio;
+    else if(id == toCanId(Device_ID::CAN_STM1, ControllerData::R_SpeedDifferentialRatio))
+        driverControllers[0]->speedDifferentialRatio = ratio;
+    updateRatioLabels();
+}
+
 
 /************Кнопки очистки графиков и смены состояния**************/
 void MainWindow::on_clearPlotButton_released()
@@ -257,9 +283,75 @@ void MainWindow::on_startStopButton_released()
 }
 void MainWindow::on_stopDriverBtn_released()
 {
-    emit allowTransmitCommand(Device_ID::CAN_STM1, ControllerCommand::DriverStop);
-}
+    emit allowTransmitCommand(Device_ID::CAN_All, ControllerCommand::ToggleStopDriver);
+    if(driverControllers[0]->driverState){
+        ui->stopDriverBtn->setStyleSheet("QPushButton {"
+                                        "    border: none;"
+                                        "    border-radius: 3px;"
+                                        "    text-decoration: none;"
+                                        "   color: white;"
+                                        "   background: rgb(255, 96, 47); "
+                                        "	height: 40px;"
+                                        "}"
+                                        "QPushButton:hover {"
+                                        "    background: rgb(200, 96, 47); "
+                                        "    position: relative;"
+                                        "    top: 5px;"
+                                        "}");
+    }
+    else{
+        ui->stopDriverBtn->setStyleSheet("QPushButton {"
+                                        "    border: none;"
+                                        "    border-radius: 3px;"
+                                        "    text-decoration: none;"
+                                        "   color: white;"
+                                        "   background:  rgb(23, 190, 165); "
+                                        "	height: 40px;"
+                                        "}"
+                                        "QPushButton:hover {"
+                                        "    background: rgb(23, 160, 165);  "
+                                        "    position: relative;"
+                                        "    top: 5px;"
+                                        "}");
+    }
+    driverControllers[0]->driverState=!(driverControllers[0]->driverState);
 
+}
+void MainWindow::on_stopDriverBtn_2_released()
+{
+   emit allowTransmitCommand(Device_ID::CAN_All, ControllerCommand::ToggleLockKey);
+    if(driverControllers[0]->lockKeyState){
+        ui->stopDriverBtn_2->setStyleSheet("QPushButton {"
+                                        "    border: none;"
+                                        "    border-radius: 3px;"
+                                        "    text-decoration: none;"
+                                        "   color: white;"
+                                        "   background: rgb(255, 96, 47); "
+                                        "	height: 40px;"
+                                        "}"
+                                        "QPushButton:hover {"
+                                        "    background: rgb(200, 96, 47); "
+                                        "    position: relative;"
+                                        "    top: 5px;"
+                                        "}");
+    }
+    else{
+        ui->stopDriverBtn_2->setStyleSheet("QPushButton {"
+                                        "    border: none;"
+                                        "    border-radius: 3px;"
+                                        "    text-decoration: none;"
+                                        "   color: white;"
+                                        "   background:  rgb(23, 190, 165); "
+                                        "	height: 40px;"
+                                        "}"
+                                        "QPushButton:hover {"
+                                        "    background: rgb(23, 160, 165);  "
+                                        "    position: relative;"
+                                        "    top: 5px;"
+                                        "}");
+    }
+    driverControllers[0]->lockKeyState=!(driverControllers[0]->lockKeyState);
+}
 
 /************Кнопки отправки коэффициентов регулирования**************/
 void MainWindow::on_anglePButton_released()
@@ -349,9 +441,20 @@ void MainWindow::on_updateIfaceBtn_released()
 {
     QString iface = CAN_handler->getIface();
     if(ui->canRadioBtn->isChecked() && iface!="can0")
-        CAN_handler->CAN_Set_Interface(CAN_IFace::CAN0);
+        CAN_handler->CANSetInterface(CAN_IFace::CAN0);
     else if(ui->vcanRadioBtn->isChecked() && iface!="vcan0")
-        CAN_handler->CAN_Set_Interface(CAN_IFace::VCAN);
+        CAN_handler->CANSetInterface(CAN_IFace::VCAN);
+
+}
+
+void MainWindow::updateRatioLabels()
+{
+    ui->anglePLE->setText(QString::number(driverControllers[0]->positionProportionalRatio));
+    ui->angleILE->setText(QString::number(driverControllers[0]->positionIntegralRatio));
+    ui->angleDLE->setText(QString::number(driverControllers[0]->positionDifferentialRatio));
+    ui->velocityPLE->setText(QString::number(driverControllers[0]->speedProportionalRatio));
+    ui->velocityILE->setText(QString::number(driverControllers[0]->speedDifferentialRatio));
+    ui->velocityDLE->setText(QString::number(driverControllers[0]->speedIntegralRatio));
 
 }
 /************Вспомогательные функции**************/
@@ -359,6 +462,4 @@ double toPointDouble(QString commaDouble)
 {
     return commaDouble.replace(",", ".").toDouble();
 }
-
-
 

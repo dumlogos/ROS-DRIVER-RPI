@@ -122,8 +122,8 @@
      <rect>
       <x>1050</x>
       <y>10</y>
-      <width>431</width>
-      <height>620</height>
+      <width>441</width>
+      <height>607</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
@@ -148,7 +148,14 @@ width: 20px;
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="angleLineEdit"/>
+         <widget class="QLineEdit" name="angleLineEdit">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>25</height>
+           </size>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="QLabel" name="label_2">
@@ -168,7 +175,14 @@ width: 20px;
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="velocityLineEdit"/>
+         <widget class="QLineEdit" name="velocityLineEdit">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>25</height>
+           </size>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="QLabel" name="angleLabel">
@@ -667,67 +681,7 @@ QPushButton:hover {
      </item>
      <item>
       <layout class="QGridLayout" name="gridLayout">
-       <item row="0" column="1">
-        <widget class="QPushButton" name="clearPlotButton">
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-           <underline>false</underline>
-           <strikeout>false</strikeout>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QPushButton {
-    border: none;
-    border-radius: 3px;
-    text-decoration: none;
-    color: white;
-    background: rgb(23, 190, 165); 
-	height: 40px;
-}
-QPushButton:hover {
-    background: rgb(23, 160, 165); 
-    position: relative;
-    top: 5px;
-}</string>
-         </property>
-         <property name="text">
-          <string>Очистить
- график</string>
-         </property>
-        </widget>
-       </item>
        <item row="0" column="0">
-        <widget class="QPushButton" name="clearPlotButton_2">
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-           <underline>false</underline>
-           <strikeout>false</strikeout>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QPushButton {
-    border: none;
-    border-radius: 3px;
-    text-decoration: none;
-    color: white;
-    background: rgb(23, 190, 165); 
-	height: 40px;
-}
-QPushButton:hover {
-    background: rgb(23, 160, 165); 
-    position: relative;
-    top: 5px;
-}</string>
-         </property>
-         <property name="text">
-          <string>Обнулить
- положение</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="2">
         <widget class="QPushButton" name="stopDriverBtn">
          <property name="font">
           <font>
@@ -755,6 +709,98 @@ QPushButton:hover {
          <property name="text">
           <string>Включить 
 тормоз</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QPushButton" name="stopDriverBtn_2">
+         <property name="font">
+          <font>
+           <family>Sans Serif</family>
+           <pointsize>10</pointsize>
+           <underline>false</underline>
+           <strikeout>false</strikeout>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
+    border: none;
+    border-radius: 3px;
+    text-decoration: none;
+    color: white;
+    background: rgb(23, 190, 165); 
+	height: 40px;
+}
+QPushButton:hover {
+    background: rgb(23, 160, 165); 
+    position: relative;
+    top: 5px;
+}</string>
+         </property>
+         <property name="text">
+          <string>Разомкнуть 
+ ключ</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="2" colspan="2">
+        <widget class="QPushButton" name="updateIfaceBtn">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+           <underline>false</underline>
+           <strikeout>false</strikeout>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
+    border: none;
+    border-radius: 3px;
+    text-decoration: none;
+    color: white;
+	height: 40px;
+	background-color: rgb(255, 119, 21);
+}
+QPushButton:hover {
+   
+	background-color: rgb(207, 69, 0);
+    position: relative;
+    top: 5px;
+}</string>
+         </property>
+         <property name="text">
+          <string>Обновить 
+интерфейс</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QPushButton" name="clearPlotButton_2">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+           <underline>false</underline>
+           <strikeout>false</strikeout>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
+    border: none;
+    border-radius: 3px;
+    text-decoration: none;
+    color: white;
+    background: rgb(23, 190, 165); 
+	height: 40px;
+}
+QPushButton:hover {
+    background: rgb(23, 160, 165); 
+    position: relative;
+    top: 5px;
+}</string>
+         </property>
+         <property name="text">
+          <string>Обнулить
+ положение</string>
          </property>
         </widget>
        </item>
@@ -806,8 +852,8 @@ QPushButton:hover {
          </layout>
         </widget>
        </item>
-       <item row="1" column="2">
-        <widget class="QPushButton" name="updateIfaceBtn">
+       <item row="0" column="3">
+        <widget class="QPushButton" name="clearPlotButton">
          <property name="font">
           <font>
            <pointsize>10</pointsize>
@@ -821,19 +867,18 @@ QPushButton:hover {
     border-radius: 3px;
     text-decoration: none;
     color: white;
+    background: rgb(23, 190, 165); 
 	height: 40px;
-	background-color: rgb(255, 119, 21);
 }
 QPushButton:hover {
-   
-	background-color: rgb(207, 69, 0);
+    background: rgb(23, 160, 165); 
     position: relative;
     top: 5px;
 }</string>
          </property>
          <property name="text">
-          <string>Обновить 
-интерфейс</string>
+          <string>Очистить
+ график</string>
          </property>
         </widget>
        </item>

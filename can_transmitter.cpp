@@ -61,8 +61,6 @@ void CAN_Transmitter::transmitAngle(float position, Device_ID device)
     }
     dataTransmit(toCanId(device, ControllerData::T_Position), 4);
 }
-
-
 void CAN_Transmitter::transmitVelocity(float speed, Device_ID device)
 {
     CAN_comData->RT_data.floats.fl1 = speed;
@@ -81,21 +79,17 @@ void CAN_Transmitter::transmitStartBreak(DriverState state, Device_ID device)
     if(state == DriverState::START){
         startState[0] = {DriverState::START};
         dataTransmit(startState,
-                     toCanId(device, ControllerCommand::DriverStop),
+                     toCanId(device, ControllerCommand::ToggleStopDriver),
                      sizeof(startState));
     }
     else if (state == DriverState::STOP){
         startState[0] = {DriverState::STOP};
         dataTransmit(startState,
-                     toCanId(device, ControllerCommand::DriverStop),
+                     toCanId(device, ControllerCommand::ToggleStopDriver),
                      sizeof(startState));
     }
 
 }
-
-
-
-
 void CAN_Transmitter::transmitClearPlot()
 {
     for(int i = 0; i<6; ++i)

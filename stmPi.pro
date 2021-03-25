@@ -15,6 +15,7 @@ SOURCES += \
     can_handler.cpp \
     can_receiver.cpp \
     can_transmitter.cpp \
+    drivercontroller.cpp \
     main.cpp \
     mainwindow.cpp
 
@@ -25,6 +26,7 @@ HEADERS += \
     can_receiver.h \
     can_struct.h \
     can_transmitter.h \
+    drivercontroller.h \
     mainwindow.h
 
 FORMS += \

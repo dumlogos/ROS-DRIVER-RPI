@@ -2,6 +2,7 @@
 #define CAN_RECEIVER_H
 
 #include "can_handler.h"
+#include "CAN_ENUM.h"
 
 #include <QObject>
 
@@ -31,6 +32,7 @@ signals:
     void CurrentSignal(double current, double timeStamp);
     void CleanPlotSignal();
     void HeartbeatSignal();
+    void RatioSignal(double ratio, uint32_t id);
 
 
 };

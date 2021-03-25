@@ -25,27 +25,26 @@ bool CAN_Receiver::dataReceive()
 {
     CAN_comData->nbytes = read(CAN_comData->s, &(CAN_comData->frame), sizeof(CAN_comData->frame));
     if(CAN_comData->nbytes > 0) {
-        qDebug() << "receive " << CAN_comData->frame.can_id ;
         if(CAN_comData->frame.can_id == toCanId(Device_ID::CAN_STM1, ControllerData::R_Position)){
             for(int i = 0; i < 4; i++){
-                CAN_comData->RT_data.uintData[7-i]=CAN_comData->frame.data[i+4];
-                CAN_comData->RT_data.uintData[3-i]=CAN_comData->frame.data[i];
+                CAN_comData->RT_data.uintData[i+4]=CAN_comData->frame.data[i+4];
+                CAN_comData->RT_data.uintData[i]=CAN_comData->frame.data[i];
             }
             emit AngleSignal(CAN_comData->RT_data.floats.fl1, CAN_comData->RT_data.floats.fl2);
         }
         else if(CAN_comData->frame.can_id == toCanId(Device_ID::CAN_STM1, ControllerData::R_Speed))
         {
             for(int i = 0; i < 4; i++){
-                CAN_comData->RT_data.uintData[7-i]=CAN_comData->frame.data[i+4];
-                CAN_comData->RT_data.uintData[3-i]=CAN_comData->frame.data[i];
+                CAN_comData->RT_data.uintData[i+4]=CAN_comData->frame.data[i+4];
+                CAN_comData->RT_data.uintData[i]=CAN_comData->frame.data[i];
             }
 
             emit VelocitySignal(CAN_comData->RT_data.floats.fl1, CAN_comData->RT_data.floats.fl2);
         }
         else if(CAN_comData->frame.can_id == toCanId(Device_ID::CAN_STM1, ControllerData::R_Current)){
             for(int i = 0; i < 4; i++){
-                CAN_comData->RT_data.uintData[7-i]=CAN_comData->frame.data[i+4];
-                CAN_comData->RT_data.uintData[3-i]=CAN_comData->frame.data[i];
+                CAN_comData->RT_data.uintData[i+4]=CAN_comData->frame.data[i+4];
+                CAN_comData->RT_data.uintData[i]=CAN_comData->frame.data[i];
             }
 
             emit CurrentSignal(CAN_comData->RT_data.floats.fl1, CAN_comData->RT_data.floats.fl2);
@@ -59,6 +58,18 @@ bool CAN_Receiver::dataReceive()
                CAN_comData->RT_data.uintData[i] = CAN_comData->frame.data[i];
             }
             //emit StartBreakReceived();
+        }
+        else if((CAN_comData->frame.can_id == toCanId(Device_ID::CAN_STM1, ControllerData::R_PositionProportionalRatio)) ||
+                (CAN_comData->frame.can_id == toCanId(Device_ID::CAN_STM1, ControllerData::R_PositionDifferentialRatio)) ||
+                (CAN_comData->frame.can_id == toCanId(Device_ID::CAN_STM1, ControllerData::R_PositionIntegralRatio)) ||
+                (CAN_comData->frame.can_id == toCanId(Device_ID::CAN_STM1, ControllerData::R_SpeedProportionalRatio)) ||
+                (CAN_comData->frame.can_id == toCanId(Device_ID::CAN_STM1, ControllerData::R_SpeedDifferentialRatio)) ||
+                (CAN_comData->frame.can_id == toCanId(Device_ID::CAN_STM1, ControllerData::R_SpeedIntegralRatio))){
+
+            for(int i = 0; i < 8; ++i){
+               CAN_comData->RT_data.uintData[i] = CAN_comData->frame.data[i];
+            }
+            emit RatioSignal(CAN_comData->RT_data.floats.fl1, CAN_comData->frame.can_id);
         }
         else if((CAN_comData->frame.can_id == toCanId(Device_ID::CAN_STM1, ControllerCommand::HeartbeatRespond)) ||
                 (CAN_comData->frame.can_id == toCanId(Device_ID::CAN_STM2, ControllerCommand::HeartbeatRespond)) ||
@@ -78,5 +89,4 @@ void CAN_Receiver::receiveAll(){
         dataReceive();
     }
 }
-
 
