@@ -136,8 +136,8 @@ MainWindow::MainWindow(QWidget *parent)
                             this, SLOT(velocityReceived(double, double)));
     connect(CAN_handler->Receiver, SIGNAL(CurrentSignal(double, double)),
                             this, SLOT(currentReceived(double, double)));
-    connect(CAN_handler->Receiver, SIGNAL(RatioSignal(double, uint32_t)),
-                            this, SLOT(ratioReceived(double, uint32_t)));
+    connect(CAN_handler->Receiver, SIGNAL(RatioSignal(float, uint32_t)),
+                            this, SLOT(ratioReceived(float, uint32_t)));
 
     connect(CAN_handler->Receiver, SIGNAL(CleanPlotSignal()),
                             this, SLOT(on_clearPlotButton_released()));
@@ -224,7 +224,7 @@ void MainWindow::currentReceived(double current, double timeStamp)
     driverControllers[0]->curCurrent = current;
 }
 
-void MainWindow::ratioReceived(double ratio, uint32_t id)
+void MainWindow::ratioReceived(float ratio, uint32_t id)
 {
     if(id == toCanId(Device_ID::CAN_STM1, ControllerData::R_PositionProportionalRatio))
         driverControllers[0]->positionProportionalRatio = ratio;
