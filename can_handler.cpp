@@ -13,6 +13,7 @@ CAN_Handler::CAN_Handler(QWidget *parent) :
 
     heartbeatTimer = new QTimer(this);
     connect(heartbeatTimer, SIGNAL(timeout()), this, SLOT(HeartbeatTransmit()));
+    emit RatioQuery();
     //Изменить!!!!!!!!!!!!!!!!!!!!!!
     heartbeatTimer->start(20);
     connect(Receiver, SIGNAL(HeartbeatSignal()), this, SLOT(HeartbeatReceived()));
@@ -62,8 +63,6 @@ bool CAN_Handler::CANHandlerSetup()
         CAN_comData.frame.data[i] = 0;
         CAN_comData.RT_data.uintData[i]=0;
     }
-
-    emit RatioQuery();
 
     return true;
 }
