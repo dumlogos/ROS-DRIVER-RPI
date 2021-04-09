@@ -65,18 +65,18 @@ enum ControllerData{
         R_Current,
 
         T_PositionProportionalRatio,
-        T_PositionDifferentialRatio,
         T_PositionIntegralRatio,
+        T_PositionDifferentialRatio,
         T_SpeedProportionalRatio,
-        T_SpeedDifferentialRatio,
         T_SpeedIntegralRatio,
+        T_SpeedDifferentialRatio,
 
         R_PositionProportionalRatio,
-        R_PositionDifferentialRatio,
         R_PositionIntegralRatio,
+        R_PositionDifferentialRatio,
         R_SpeedProportionalRatio,
-        R_SpeedDifferentialRatio,
         R_SpeedIntegralRatio,
+        R_SpeedDifferentialRatio,
 
         R_DriverState
 };

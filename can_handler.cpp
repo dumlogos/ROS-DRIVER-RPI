@@ -103,7 +103,7 @@ void CAN_Handler::HeartbeatTransmit()
 {
     if(heartbeatRequests >= 7){
         heartbeatRequests = 0;
-        Transmitter->transmitCommand(toCanId(Device_ID::CAN_All, RPiCommand::Heartbeat));
+        Transmitter->transmitCommand(Device_ID::CAN_All + RPiCommand::Heartbeat);
     }
 }
 void CAN_Handler::HeartbeatReceived()
@@ -118,16 +118,4 @@ CAN_Struct* CAN_Handler::getCAN_Struct(){
 QString CAN_Handler::getIface()
 {
     return iface;
-}
-uint32_t toCanId(Device_ID device, ControllerCommand command)
-{
-    return (uint32_t)device + (uint32_t)command;
-}
-uint32_t toCanId(Device_ID device, ControllerData dataType)
-{
-    return (uint32_t)device + (uint32_t)dataType;
-}
-uint32_t toCanId(Device_ID device, RPiCommand command)
-{
-    return (uint32_t)device + (uint32_t)command;
 }

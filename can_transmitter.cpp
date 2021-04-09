@@ -46,11 +46,11 @@ bool CAN_Transmitter::transmitCommand(uint32_t cmndId,  uint8_t *data)
 }
 bool CAN_Transmitter::transmitCommand(Device_ID device, RPiCommand rpiCommand, uint8_t *data)
 {
-   return transmitCommand(toCanId(device, rpiCommand), data);
+   return transmitCommand(device + rpiCommand, data);
 }
 bool CAN_Transmitter::transmitCommand(Device_ID device, ControllerCommand cntrCommand, uint8_t *data)
 {
-   return transmitCommand(toCanId(device, cntrCommand), data);
+   return transmitCommand(device + cntrCommand, data);
 }
 
 void CAN_Transmitter::transmitAngle(float position, Device_ID device)
@@ -59,7 +59,7 @@ void CAN_Transmitter::transmitAngle(float position, Device_ID device)
     for(int i = 0; i < 4; i++){
         CAN_comData->frame.data[i] = CAN_comData->RT_data.uintData[3-i];
     }
-    dataTransmit(toCanId(device, ControllerData::T_Position), 4);
+    dataTransmit(device + ControllerData::T_Position, 4);
 }
 void CAN_Transmitter::transmitVelocity(float speed, Device_ID device)
 {
@@ -68,7 +68,7 @@ void CAN_Transmitter::transmitVelocity(float speed, Device_ID device)
 
         CAN_comData->frame.data[i] = CAN_comData->RT_data.uintData[3-i];
     }
-    dataTransmit(toCanId(device, ControllerData::T_Speed), 4);
+    dataTransmit(device + ControllerData::T_Speed, 4);
 
 }
 
@@ -79,21 +79,20 @@ void CAN_Transmitter::transmitStartBreak(DriverState state, Device_ID device)
     if(state == DriverState::START){
         startState[0] = {DriverState::START};
         dataTransmit(startState,
-                     toCanId(device, ControllerCommand::ToggleStopDriver),
+                     device + ControllerCommand::ToggleStopDriver,
                      sizeof(startState));
     }
     else if (state == DriverState::STOP){
         startState[0] = {DriverState::STOP};
         dataTransmit(startState,
-                     toCanId(device, ControllerCommand::ToggleStopDriver),
+                     device + ControllerCommand::ToggleStopDriver,
                      sizeof(startState));
     }
 
 }
 void CAN_Transmitter::transmitClearPlot()
 {
-    for(int i = 0; i<6; ++i)
-        dataTransmit(toCanId(Device_ID::CAN_All, RPiCommand::T_CleanPlot), 0);
+   dataTransmit(Device_ID::CAN_All + RPiCommand::T_CleanPlot, 0);
 }
 
 void CAN_Transmitter::transmitRatio(float ratio, Device_ID device, ControllerData ratioType)
@@ -102,7 +101,7 @@ void CAN_Transmitter::transmitRatio(float ratio, Device_ID device, ControllerDat
     for(int i = 0; i < 4; i++){
         CAN_comData->frame.data[i] = CAN_comData->RT_data.uintData[3-i];
     }
-    dataTransmit(CAN_comData->frame.data, toCanId(device, ratioType), 4);
+    dataTransmit(CAN_comData->frame.data, device + ratioType, 4);
 }
 
 

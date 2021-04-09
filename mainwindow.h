@@ -28,7 +28,7 @@
 #include <QPointF>
 #include <QDebug>
 
-double toPointDouble(QString commaDouble);
+float toPointFloat(QString commaDouble);
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

@@ -106,11 +106,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(plotTimer, SIGNAL(timeout()), this, SLOT(rePaint()));
     plotTimer->start(5);
 
-    QTimer* ratioTimer = new QTimer(this);
-    connect(ratioTimer, SIGNAL(timeout()), this, SIGNAL(RatioQuery()));
-    connect(ratioTimer, SIGNAL(timeout()), ratioTimer, SIGNAL(stop()));
-    ratioTimer->start(20);
-
     angleParameterValidator = new QDoubleValidator(-11520, 11520, 2, this);
     velocityParameterValidator = new QDoubleValidator(0, 50, 2, this);
     PIDratioParameterValidator = new QDoubleValidator(0, 10, 8, this);
@@ -160,12 +155,14 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this , SIGNAL(allowTransmitCommand(Device_ID, RPiCommand, uint8_t*)),
             CAN_handler->Transmitter, SLOT(transmitCommand(Device_ID, RPiCommand, uint8_t*)));
 
+
+
     CAN_handler->Handle();
 
     for(int i = 0; i < 6; ++i)
         driverControllers.append(new DriverController());
 
-
+    emit RatioQuery();
 }
 
 MainWindow::~MainWindow()
@@ -233,18 +230,18 @@ void MainWindow::currentReceived(double current, double timeStamp)
 }
 
 void MainWindow::ratioReceived(float ratio, uint32_t id)
-{
-    if(id == toCanId(Device_ID::CAN_STM1, ControllerData::R_PositionProportionalRatio))
+{  
+    if(id == Device_ID::CAN_STM1 + ControllerData::R_PositionProportionalRatio)
         driverControllers[0]->positionProportionalRatio = ratio;
-    else if(id == toCanId(Device_ID::CAN_STM1, ControllerData::R_PositionIntegralRatio))
+    else if(id == Device_ID::CAN_STM1 + ControllerData::R_PositionIntegralRatio)
         driverControllers[0]->positionIntegralRatio = ratio;
-    else if(id == toCanId(Device_ID::CAN_STM1, ControllerData::R_PositionDifferentialRatio))
+    else if(id == Device_ID::CAN_STM1 + ControllerData::R_PositionDifferentialRatio)
         driverControllers[0]->positionDifferentialRatio = ratio;
-    else if(id == toCanId(Device_ID::CAN_STM1, ControllerData::R_SpeedProportionalRatio))
+    else if(id == Device_ID::CAN_STM1 + ControllerData::R_SpeedProportionalRatio)
         driverControllers[0]->speedProportionalRatio = ratio;
-    else if(id == toCanId(Device_ID::CAN_STM1, ControllerData::R_SpeedIntegralRatio))
+    else if(id == Device_ID::CAN_STM1 + ControllerData::R_SpeedIntegralRatio)
         driverControllers[0]->speedIntegralRatio = ratio;
-    else if(id == toCanId(Device_ID::CAN_STM1, ControllerData::R_SpeedDifferentialRatio))
+    else if(id == Device_ID::CAN_STM1 + ControllerData::R_SpeedDifferentialRatio)
         driverControllers[0]->speedDifferentialRatio = ratio;
     updateRatioLabels();
 }
@@ -276,7 +273,7 @@ void MainWindow::on_startStopButton_released()
         if(ui->startStopButton->styleSheet() != "QPushButton {background: red; }" ||
            ui->startStopButton->styleSheet() == "QPushButton {background: orange;  }"){
                 ui->startStopButton->setStyleSheet("QPushButton {background: red; }");
-                emit allowTransmitAngle(toPointDouble(ui->angleLineEdit->text()), Device_ID::CAN_STM1);
+                emit allowTransmitAngle(toPointFloat(ui->angleLineEdit->text()), Device_ID::CAN_STM1);
                 emit allowTransmitCommand(Device_ID::CAN_STM1, ControllerCommand::MotorMoved);
                 ui->startStopButton->setStyleSheet("QPushButton {background: rgb(85, 255, 0);}");
 
@@ -367,7 +364,7 @@ void MainWindow::on_anglePButton_released()
     if(ui->anglePLE->hasAcceptableInput()){
         if(ui->anglePButton->styleSheet() != "QPushButton {background-color: red;}"){
                 ui->anglePButton->setStyleSheet("QPushButton {background-color: red;}");
-                emit allowTransmitRatio(toPointDouble(ui->anglePLE->text()),
+                emit allowTransmitRatio(toPointFloat(ui->anglePLE->text()),
                                         Device_ID::CAN_STM1, ControllerData::T_PositionProportionalRatio);
                 ui->anglePButton->setStyleSheet("QPushButton {background-color: rgb(255, 255, 255);}");
 
@@ -382,7 +379,7 @@ void MainWindow::on_angleIButton_released()
     if(ui->angleILE->hasAcceptableInput()){
         if(ui->angleIButton->styleSheet() != "QPushButton {background-color: red;}"){
                 ui->angleIButton->setStyleSheet("QPushButton {background-color: red;}");
-                emit allowTransmitRatio(toPointDouble(ui->angleILE->text()),
+                emit allowTransmitRatio(toPointFloat(ui->angleILE->text()),
                                         Device_ID::CAN_STM1, ControllerData::T_PositionIntegralRatio);
                 ui->angleIButton->setStyleSheet("QPushButton {background-color: rgb(85, 255, 0);}");
         }
@@ -395,7 +392,7 @@ void MainWindow::on_angleDButton_released()
     if(ui->angleDLE->hasAcceptableInput()){
         if(ui->angleDButton->styleSheet() != "QPushButton {background-color: red;}"){
                 ui->angleDButton->setStyleSheet("QPushButton {background-color: red;}");
-                emit allowTransmitRatio(toPointDouble(ui->angleDLE->text()),
+                emit allowTransmitRatio(toPointFloat(ui->angleDLE->text()),
                                         Device_ID::CAN_STM1, ControllerData::T_PositionDifferentialRatio);
                 ui->angleDButton->setStyleSheet("QPushButton {background-color: rgb(85, 255, 0);}");
         }
@@ -408,7 +405,7 @@ void MainWindow::on_velocityPButton_released()
     if(ui->velocityPLE->hasAcceptableInput()){
         if(ui->velocityPButton->styleSheet() != "QPushButton {background-color: red;}"){
                 ui->velocityPButton->setStyleSheet("QPushButton {background-color: red;}");
-                emit allowTransmitRatio(toPointDouble(ui->velocityPLE->text()),
+                emit allowTransmitRatio(toPointFloat(ui->velocityPLE->text()),
                                         Device_ID::CAN_STM1, ControllerData::T_SpeedProportionalRatio);
                 ui->velocityPButton->setStyleSheet("QPushButton {background-color: rgb(85, 255, 0);}");
         }
@@ -422,7 +419,7 @@ void MainWindow::on_velocityIButton_released()
     if(ui->velocityILE->hasAcceptableInput()){
         if(ui->velocityIButton->styleSheet() != "QPushButton {background-color: red;}"){
                 ui->velocityIButton->setStyleSheet("QPushButton {background-color: red;}");
-                emit allowTransmitRatio(toPointDouble(ui->velocityILE->text()),
+                emit allowTransmitRatio(toPointFloat(ui->velocityILE->text()),
                                         Device_ID::CAN_STM1, ControllerData::T_SpeedIntegralRatio);
                 ui->velocityIButton->setStyleSheet("QPushButton {background-color: rgb(85, 255, 0);}");
         }
@@ -435,7 +432,7 @@ void MainWindow::on_velocityDButton_released()
     if(ui->velocityDLE->hasAcceptableInput()){
         if(ui->velocityDButton->styleSheet() != "QPushButton {background-color: red;}"){
                 ui->velocityDButton->setStyleSheet("QPushButton {background-color: red;}");
-                emit allowTransmitRatio(toPointDouble(ui->velocityDLE->text()),
+                emit allowTransmitRatio(toPointFloat(ui->velocityDLE->text()),
                                         Device_ID::CAN_STM1, ControllerData::T_SpeedDifferentialRatio);
                 ui->velocityDButton->setStyleSheet("QPushButton {background-color: rgb(85, 255, 0);}");
         }
@@ -461,13 +458,13 @@ void MainWindow::updateRatioLabels()
     ui->angleILE->setText(QString::number(driverControllers[0]->positionIntegralRatio));
     ui->angleDLE->setText(QString::number(driverControllers[0]->positionDifferentialRatio));
     ui->velocityPLE->setText(QString::number(driverControllers[0]->speedProportionalRatio));
-    ui->velocityILE->setText(QString::number(driverControllers[0]->speedDifferentialRatio));
-    ui->velocityDLE->setText(QString::number(driverControllers[0]->speedIntegralRatio));
+    ui->velocityILE->setText(QString::number(driverControllers[0]->speedIntegralRatio));
+    ui->velocityDLE->setText(QString::number(driverControllers[0]->speedDifferentialRatio));
 
 }
 /************Вспомогательные функции**************/
-double toPointDouble(QString commaDouble)
+float toPointFloat(QString commaDouble)
 {
-    return commaDouble.replace(",", ".").toDouble();
+    return commaDouble.replace(",", ".").toFloat();
 }
 
