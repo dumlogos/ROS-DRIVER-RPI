@@ -175,7 +175,7 @@ MainWindow::~MainWindow()
     delete velocityCurve;
 }
 
-bool MainWindow::saveDriverConfiguration(DriverController *driverConfiguration, QString fileName)
+bool MainWindow::saveDriverConfiguration(DriverController &driverConfiguration, QString fileName)
 {
     if(!QDir("Driver configurations").exists())
         if(!QDir().mkdir("Driver configurations")){
@@ -185,6 +185,7 @@ bool MainWindow::saveDriverConfiguration(DriverController *driverConfiguration, 
 
     QFile driverConfigurationFile("./Driver configurations/" + fileName + ".stmdrv");
     QDataStream stream(&driverConfigurationFile);
+    stream.setVersion(QDataStream::Qt_DefaultCompiledVersion);
 
     if(!driverConfigurationFile.open(QIODevice::WriteOnly)){
         qDebug() << "File opening error";
@@ -193,34 +194,41 @@ bool MainWindow::saveDriverConfiguration(DriverController *driverConfiguration, 
 
     stream << driverConfiguration;
 
+    qDebug() << driverConfiguration.positionProportionalRatio  << " " << driverConfiguration.positionIntegralRatio \
+             << " " << driverConfiguration.positionDifferentialRatio << " " << driverConfiguration.speedProportionalRatio\
+             << " " << driverConfiguration.speedIntegralRatio << " " << driverConfiguration.speedDifferentialRatio;
+
+
+
     driverConfigurationFile.close();
 
     return true;
 }
 
-DriverController *MainWindow::uploadDriverConfiguration(QString fileName)
+bool MainWindow::uploadDriverConfiguration(DriverController& driverConfiguration, QString fileName)
 {
     if(!QDir("Driver configurations").exists())
         if(!QDir().mkdir("Driver configurations")){
             qDebug() << "Directory creating error";
         }
 
-    DriverController uploadedDriverConfiguration;
-
     QFile driverConfigurationFile("./Driver configurations/" + fileName + ".stmdrv");
     QDataStream stream(&driverConfigurationFile);
+    stream.setVersion(QDataStream::Qt_DefaultCompiledVersion);
     if(!driverConfigurationFile.open(QIODevice::ReadOnly)){
         qDebug() << "File opening error";
+        return false;
     }
-    else{
-        stream >> uploadedDriverConfiguration;
-    }
+    else
+        stream >> driverConfiguration;
 
 
     driverConfigurationFile.close();
-    qDebug() << uploadedDriverConfiguration.positionProportionalRatio;
+    qDebug() << driverConfiguration.positionProportionalRatio  << " " << driverConfiguration.positionIntegralRatio \
+             << " " << driverConfiguration.positionDifferentialRatio << " " << driverConfiguration.speedProportionalRatio\
+             << " " << driverConfiguration.speedIntegralRatio << " " << driverConfiguration.speedDifferentialRatio;
 
-    return &uploadedDriverConfiguration;
+    return true;
 }
 
 void MainWindow::rePaint()
@@ -520,13 +528,18 @@ float toPointFloat(QString commaDouble)
 
 void MainWindow::on_saveCfgButton_released()
 {
-    saveDriverConfiguration(driverControllers[0], "Driver 1");
+    saveDriverConfiguration(*(driverControllers[0]), "Driver 1");
 }
 
 void MainWindow::on_uploadCfgButton_released()
 {
-    DriverController *uploadedController;
-    uploadedController = uploadDriverConfiguration("Driver 1");
-    //driverControllers.replace(0, uploadedController);
+    DriverController uploadedController;
+    uploadDriverConfiguration(uploadedController, "Driver 1");
+    qDebug() << uploadedController.positionProportionalRatio  << " " << uploadedController.positionIntegralRatio \
+                 << " " << uploadedController.positionDifferentialRatio << " " << uploadedController.speedProportionalRatio\
+                 << " " << uploadedController.speedIntegralRatio << " " << uploadedController.speedDifferentialRatio;
+
+
+    driverControllers.replace(0, &uploadedController);
     updateRatioLabels();
 }

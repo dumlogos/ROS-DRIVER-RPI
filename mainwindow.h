@@ -69,8 +69,8 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    bool saveDriverConfiguration(DriverController* driverConfiguration, QString fileName);
-    DriverController* uploadDriverConfiguration(QString fileName);
+    bool saveDriverConfiguration(DriverController& driverConfiguration, QString fileName);
+    bool uploadDriverConfiguration(DriverController& driverConfiguration, QString fileName);
 
 private slots:
     void rePaint();
