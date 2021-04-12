@@ -5,6 +5,13 @@ DriverController::DriverController():
     lockKeyState(true)
 {
     controllerID = controllerCount++;
+
+    positionProportionalRatio = 0;
+    positionIntegralRatio = 0;
+    positionDifferentialRatio = 0;
+    speedProportionalRatio = 0;
+    speedIntegralRatio = 0;
+    speedDifferentialRatio = 0;
 }
 
 DriverController::~DriverController()

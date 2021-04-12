@@ -2,6 +2,7 @@
 #define DRIVERCONTROLLER_H
 
 #include <QObject>
+#include <QDataStream>
 #include <CAN_ENUM.h>
 
 
@@ -27,6 +28,20 @@ public:
     float speedProportionalRatio;
     float speedIntegralRatio;
     float speedDifferentialRatio;
+
+    friend QDataStream& operator<<(QDataStream& d, const DriverController& drC){
+        d << drC.positionProportionalRatio << drC.positionIntegralRatio << drC.positionDifferentialRatio    \
+          << drC.speedProportionalRatio << drC.speedIntegralRatio << drC.speedDifferentialRatio;
+        return d;
+    }
+
+    friend QDataStream& operator>>(QDataStream& d, DriverController& drC){
+        d >> drC.positionProportionalRatio >> drC.positionIntegralRatio >> drC.positionDifferentialRatio    \
+          >> drC.speedProportionalRatio >> drC.speedIntegralRatio >> drC.speedDifferentialRatio;
+        return d;
+
+    }
+
 
 public slots:
 

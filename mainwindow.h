@@ -1,6 +1,11 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QFile>
+#include <QDir>
+#include <QDataStream>
+
+
 #include "can_handler.h"
 #include "drivercontroller.h"
 
@@ -64,6 +69,8 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    bool saveDriverConfiguration(DriverController* driverConfiguration, QString fileName);
+    DriverController* uploadDriverConfiguration(QString fileName);
 
 private slots:
     void rePaint();
@@ -91,6 +98,10 @@ private slots:
     void on_updateIfaceBtn_released();
 
     void updateRatioLabels();
+
+    void on_saveCfgButton_released();
+
+    void on_uploadCfgButton_released();
 
 signals:
     void allowTransmitCommand(Device_ID device, ControllerCommand cntrCmnd, uint8_t *data = nullptr);

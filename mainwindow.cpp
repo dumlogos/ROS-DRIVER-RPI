@@ -163,6 +163,7 @@ MainWindow::MainWindow(QWidget *parent)
         driverControllers.append(new DriverController());
 
     emit RatioQuery();
+    updateRatioLabels();
 }
 
 MainWindow::~MainWindow()
@@ -172,6 +173,54 @@ MainWindow::~MainWindow()
     delete CAN_handler;
     delete angleCurve;
     delete velocityCurve;
+}
+
+bool MainWindow::saveDriverConfiguration(DriverController *driverConfiguration, QString fileName)
+{
+    if(!QDir("Driver configurations").exists())
+        if(!QDir().mkdir("Driver configurations")){
+            qDebug() << "Directory creating error";
+            return false;
+        }
+
+    QFile driverConfigurationFile("./Driver configurations/" + fileName + ".stmdrv");
+    QDataStream stream(&driverConfigurationFile);
+
+    if(!driverConfigurationFile.open(QIODevice::WriteOnly)){
+        qDebug() << "File opening error";
+        return false;
+    }
+
+    stream << driverConfiguration;
+
+    driverConfigurationFile.close();
+
+    return true;
+}
+
+DriverController *MainWindow::uploadDriverConfiguration(QString fileName)
+{
+    if(!QDir("Driver configurations").exists())
+        if(!QDir().mkdir("Driver configurations")){
+            qDebug() << "Directory creating error";
+        }
+
+    DriverController uploadedDriverConfiguration;
+
+    QFile driverConfigurationFile("./Driver configurations/" + fileName + ".stmdrv");
+    QDataStream stream(&driverConfigurationFile);
+    if(!driverConfigurationFile.open(QIODevice::ReadOnly)){
+        qDebug() << "File opening error";
+    }
+    else{
+        stream >> uploadedDriverConfiguration;
+    }
+
+
+    driverConfigurationFile.close();
+    qDebug() << uploadedDriverConfiguration.positionProportionalRatio;
+
+    return &uploadedDriverConfiguration;
 }
 
 void MainWindow::rePaint()
@@ -468,3 +517,16 @@ float toPointFloat(QString commaDouble)
     return commaDouble.replace(",", ".").toFloat();
 }
 
+
+void MainWindow::on_saveCfgButton_released()
+{
+    saveDriverConfiguration(driverControllers[0], "Driver 1");
+}
+
+void MainWindow::on_uploadCfgButton_released()
+{
+    DriverController *uploadedController;
+    uploadedController = uploadDriverConfiguration("Driver 1");
+    //driverControllers.replace(0, uploadedController);
+    updateRatioLabels();
+}

@@ -886,6 +886,84 @@ QPushButton:hover {
      </item>
     </layout>
    </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>1050</x>
+      <y>650</y>
+      <width>441</width>
+      <height>42</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="saveCfgButton">
+       <property name="font">
+        <font>
+         <family>Sans Serif</family>
+         <pointsize>10</pointsize>
+         <underline>false</underline>
+         <strikeout>false</strikeout>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    border: none;
+    border-radius: 3px;
+    text-decoration: none;
+    color: white;
+    background: #8DBF19;
+	width: 200px;
+	height: 40px;
+}
+
+QPushButton:hover {
+    background: #608211;
+    position: relative;
+    top: 5px;
+}</string>
+       </property>
+       <property name="text">
+        <string>Сохранить текущую 
+конфигурацию</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="uploadCfgButton">
+       <property name="font">
+        <font>
+         <family>Sans Serif</family>
+         <pointsize>10</pointsize>
+         <underline>false</underline>
+         <strikeout>false</strikeout>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    border: none;
+    border-radius: 3px;
+    text-decoration: none;
+    color: white;
+    background: #8DBF19;
+	width: 200px;
+	height: 40px;
+}
+
+QPushButton:hover {
+    background: #608211;
+    position: relative;
+    top: 5px;
+}</string>
+       </property>
+       <property name="text">
+        <string>Загрузить существующую
+конфигурацию</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
   </widget>
  </widget>
  <customwidgets>
