@@ -549,15 +549,15 @@ void MainWindow::on_uploadCfgButton_released()
 
 void MainWindow::on_transmitAllRatioButton_released()
 {
-    emit allowTransmitRatio(toPointFloat(ui->velocityDLE->text()),
+    emit allowTransmitRatio(toPointFloat(ui->anglePLE->text()),
                             Device_ID::CAN_STM1, ControllerData::T_PositionProportionalRatio);
-    emit allowTransmitRatio(toPointFloat(ui->velocityDLE->text()),
+    emit allowTransmitRatio(toPointFloat(ui->angleILE->text()),
                             Device_ID::CAN_STM1, ControllerData::T_PositionIntegralRatio);
-    emit allowTransmitRatio(toPointFloat(ui->velocityDLE->text()),
+    emit allowTransmitRatio(toPointFloat(ui->angleDLE->text()),
                             Device_ID::CAN_STM1, ControllerData::T_PositionDifferentialRatio);
-    emit allowTransmitRatio(toPointFloat(ui->velocityDLE->text()),
+    emit allowTransmitRatio(toPointFloat(ui->velocityPLE->text()),
                             Device_ID::CAN_STM1, ControllerData::T_SpeedProportionalRatio);
-    emit allowTransmitRatio(toPointFloat(ui->velocityDLE->text()),
+    emit allowTransmitRatio(toPointFloat(ui->velocityILE->text()),
                             Device_ID::CAN_STM1, ControllerData::T_SpeedIntegralRatio);
     emit allowTransmitRatio(toPointFloat(ui->velocityDLE->text()),
                             Device_ID::CAN_STM1, ControllerData::T_SpeedDifferentialRatio);
