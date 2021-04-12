@@ -542,4 +542,23 @@ void MainWindow::on_uploadCfgButton_released()
 
     driverControllers.replace(0, &uploadedController);
     updateRatioLabels();
+    on_clearPlotButton_released();
+    on_clearPlotButton_2_released();
+
+}
+
+void MainWindow::on_transmitAllRatioButton_released()
+{
+    emit allowTransmitRatio(toPointFloat(ui->velocityDLE->text()),
+                            Device_ID::CAN_STM1, ControllerData::T_PositionProportionalRatio);
+    emit allowTransmitRatio(toPointFloat(ui->velocityDLE->text()),
+                            Device_ID::CAN_STM1, ControllerData::T_PositionIntegralRatio);
+    emit allowTransmitRatio(toPointFloat(ui->velocityDLE->text()),
+                            Device_ID::CAN_STM1, ControllerData::T_PositionDifferentialRatio);
+    emit allowTransmitRatio(toPointFloat(ui->velocityDLE->text()),
+                            Device_ID::CAN_STM1, ControllerData::T_SpeedProportionalRatio);
+    emit allowTransmitRatio(toPointFloat(ui->velocityDLE->text()),
+                            Device_ID::CAN_STM1, ControllerData::T_SpeedIntegralRatio);
+    emit allowTransmitRatio(toPointFloat(ui->velocityDLE->text()),
+                            Device_ID::CAN_STM1, ControllerData::T_SpeedDifferentialRatio);
 }

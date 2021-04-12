@@ -103,6 +103,8 @@ private slots:
 
     void on_uploadCfgButton_released();
 
+    void on_transmitAllRatioButton_released();
+
 signals:
     void allowTransmitCommand(Device_ID device, ControllerCommand cntrCmnd, uint8_t *data = nullptr);
     void allowTransmitCommand(Device_ID device, RPiCommand rpiCmnd, uint8_t *data = nullptr);

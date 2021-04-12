@@ -123,7 +123,7 @@
       <x>1050</x>
       <y>10</y>
       <width>441</width>
-      <height>607</height>
+      <height>681</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
@@ -680,6 +680,36 @@ QPushButton:hover {
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="transmitAllRatioButton">
+       <property name="font">
+        <font>
+         <family>Sans Serif</family>
+         <pointsize>10</pointsize>
+         <underline>false</underline>
+         <strikeout>false</strikeout>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    border: none;
+    border-radius: 3px;
+    text-decoration: none;
+    color: white;
+    background: rgb(0, 170, 0); 
+	height: 40px;
+}
+QPushButton:hover {
+    background: rgb(0, 130, 0);
+    position: relative;
+    top: 5px;
+}</string>
+       </property>
+       <property name="text">
+        <string>Отправить все коэффициенты</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <layout class="QGridLayout" name="gridLayout">
        <item row="0" column="0">
         <widget class="QPushButton" name="stopDriverBtn">
@@ -884,30 +914,20 @@ QPushButton:hover {
        </item>
       </layout>
      </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="">
-    <property name="geometry">
-     <rect>
-      <x>1050</x>
-      <y>650</y>
-      <width>441</width>
-      <height>42</height>
-     </rect>
-    </property>
-    <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QPushButton" name="saveCfgButton">
-       <property name="font">
-        <font>
-         <family>Sans Serif</family>
-         <pointsize>10</pointsize>
-         <underline>false</underline>
-         <strikeout>false</strikeout>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">QPushButton {
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QPushButton" name="uploadCfgButton">
+         <property name="font">
+          <font>
+           <family>Sans Serif</family>
+           <pointsize>10</pointsize>
+           <underline>false</underline>
+           <strikeout>false</strikeout>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
     border: none;
     border-radius: 3px;
     text-decoration: none;
@@ -922,25 +942,25 @@ QPushButton:hover {
     position: relative;
     top: 5px;
 }</string>
-       </property>
-       <property name="text">
-        <string>Сохранить текущую 
+         </property>
+         <property name="text">
+          <string>Загрузить существующую
 конфигурацию</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="uploadCfgButton">
-       <property name="font">
-        <font>
-         <family>Sans Serif</family>
-         <pointsize>10</pointsize>
-         <underline>false</underline>
-         <strikeout>false</strikeout>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">QPushButton {
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="saveCfgButton">
+         <property name="font">
+          <font>
+           <family>Sans Serif</family>
+           <pointsize>10</pointsize>
+           <underline>false</underline>
+           <strikeout>false</strikeout>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
     border: none;
     border-radius: 3px;
     text-decoration: none;
@@ -955,12 +975,14 @@ QPushButton:hover {
     position: relative;
     top: 5px;
 }</string>
-       </property>
-       <property name="text">
-        <string>Загрузить существующую
+         </property>
+         <property name="text">
+          <string>Сохранить текущую 
 конфигурацию</string>
-       </property>
-      </widget>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </widget>
