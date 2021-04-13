@@ -272,14 +272,14 @@ void MainWindow::velocityReceived(double velocity, double timeStamp)
     else
         accelerationPlotPoints.append(QPoint(timeStamp, 0));
 
-    qDebug() << "velocity " << velocity << timeStamp;
+   // qDebug() << "velocity " << velocity << timeStamp;
     velocityPlotPoints.append(QPointF(timeStamp, velocity));
     driverControllers[0]->curSpeed = velocity;
     ui->velocityLabel->setText("Текущая угловая скорость: " + QString::number(velocity, 'f', 3));
 }
 void MainWindow::currentReceived(double current, double timeStamp)
 {
-    qDebug() << "current" << current << timeStamp;
+   // qDebug() << "current" << current << timeStamp;
     currentPlotPoints.append(QPointF(timeStamp, current));
 
     ui->currentLabel->setText("Текущий ток: " + QString::number(current, 'f', 3));
@@ -319,10 +319,10 @@ void MainWindow::on_clearPlotButton_2_released()
 }
 void MainWindow::on_dirButton_released()
 {
-    if(ui->dirButton->styleSheet() != "QPushButton {background-color: rgb(194, 204, 126);}")
-        ui->dirButton->setStyleSheet("QPushButton {background-color: rgb(194, 204, 126);}");
-    else
-        ui->dirButton->setStyleSheet("QPushButton {background-color: yellow;}");
+   // if(ui->dirButton->styleSheet() != "QPushButton {background-color: rgb(194, 204, 126);}")
+   //     ui->dirButton->setStyleSheet("QPushButton {background-color: rgb(194, 204, 126);}");
+   // else
+   //     ui->dirButton->setStyleSheet("QPushButton {background-color: yellow;}");
 }
 void MainWindow::on_startStopButton_released()
 {
@@ -541,6 +541,7 @@ void MainWindow::on_uploadCfgButton_released()
 
 
     driverControllers.replace(0, &uploadedController);
+    on_transmitAllRatioButton_released();
     updateRatioLabels();
     on_clearPlotButton_released();
     on_clearPlotButton_2_released();
@@ -549,6 +550,7 @@ void MainWindow::on_uploadCfgButton_released()
 
 void MainWindow::on_transmitAllRatioButton_released()
 {
+    CAN_handler->Transmitter->transmitCommand(Device_ID::CAN_STM1, RPiCommand::T_AllDataQuery);
     emit allowTransmitRatio(driverControllers[0]->positionProportionalRatio,
                             Device_ID::CAN_STM1, ControllerData::T_PositionProportionalRatio);
     emit allowTransmitRatio(driverControllers[0]->positionIntegralRatio,
