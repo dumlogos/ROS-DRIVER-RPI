@@ -12,7 +12,7 @@ bool CAN_Transmitter::dataTransmit(u_int8_t msg[], u_int32_t msgId, u_int32_t ms
     CAN_comData->frame.can_id = msgId;
     for(u_int8_t i = 0; i < msgDLC; ++i)
         CAN_comData->frame.data[i] = msg[i];
-    qDebug() << &(CAN_comData->frame.can_id);
+//    qDebug() << &(CAN_comData->frame.can_id);
     CAN_comData->nbytes = write(CAN_comData->s, &(CAN_comData->frame), sizeof(CAN_comData->frame));
     if(CAN_comData->nbytes != sizeof(CAN_comData->frame))
     {
@@ -27,7 +27,7 @@ bool CAN_Transmitter::dataTransmit(u_int32_t msgId, u_int32_t msgDLC)
 {
     CAN_comData->frame.can_dlc = msgDLC;
     CAN_comData->frame.can_id = msgId;
-    qDebug() << &(CAN_comData->frame.can_id);
+//    qDebug() << &(CAN_comData->frame.can_id);
     CAN_comData->nbytes = write(CAN_comData->s, &(CAN_comData->frame), sizeof(CAN_comData->frame));
     if(CAN_comData->nbytes != sizeof(CAN_comData->frame)){
         printf("Send Error frame[0]!\r\n");
@@ -57,7 +57,7 @@ void CAN_Transmitter::transmitAngle(float position, Device_ID device)
 {
     CAN_comData->RT_data.floats.fl1 = position;
     for(int i = 0; i < 4; i++){
-        CAN_comData->frame.data[i] = CAN_comData->RT_data.uintData[3-i];
+        CAN_comData->frame.data[i] = CAN_comData->RT_data.uintData[i];
     }
     dataTransmit(device + ControllerData::T_Position, 4);
 }
@@ -66,7 +66,7 @@ void CAN_Transmitter::transmitVelocity(float speed, Device_ID device)
     CAN_comData->RT_data.floats.fl1 = speed;
     for(int i = 0; i < 4; i++){
 
-        CAN_comData->frame.data[i] = CAN_comData->RT_data.uintData[3-i];
+        CAN_comData->frame.data[i] = CAN_comData->RT_data.uintData[i];
     }
     dataTransmit(device + ControllerData::T_Speed, 4);
 
@@ -99,7 +99,7 @@ void CAN_Transmitter::transmitRatio(float ratio, Device_ID device, ControllerDat
 {
     CAN_comData->RT_data.floats.fl1 = ratio;
     for(int i = 0; i < 4; i++){
-        CAN_comData->frame.data[i] = CAN_comData->RT_data.uintData[3-i];
+        CAN_comData->frame.data[i] = CAN_comData->RT_data.uintData[i];
     }
     dataTransmit(CAN_comData->frame.data, device + ratioType, 4);
 }

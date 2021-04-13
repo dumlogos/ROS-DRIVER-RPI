@@ -259,7 +259,7 @@ void MainWindow::rePaint()
 
 void MainWindow::angleReceived(double angle, double timeStamp)
 {
-    qDebug() << "angle" << angle << timeStamp;
+   // qDebug() << "angle" << angle << timeStamp;
     anglePlotPoints.append(QPointF(timeStamp, angle));
 
     ui->angleLabel->setText("Текущий угол поворота: " + QString::number(angle, 'f', 3));
@@ -543,8 +543,7 @@ void MainWindow::on_uploadCfgButton_released()
     driverControllers.replace(0, &uploadedController);
     on_transmitAllRatioButton_released();
     updateRatioLabels();
-    on_clearPlotButton_released();
-    on_clearPlotButton_2_released();
+
 
 }
 
